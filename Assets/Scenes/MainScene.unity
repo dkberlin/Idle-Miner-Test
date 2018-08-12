@@ -1184,7 +1184,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 3a035d094fccfd24f81f4ca4ed01636e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1959,7 +1959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkingSpeed: 1
   hasManager: 0
-  capacity: 5
+  capacity: 10
   loadingPosition: {fileID: 0}
   unloadingPosition: {fileID: 579418287}
   timeToLoad: 5
