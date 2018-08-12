@@ -20,11 +20,15 @@ public class GameCore : MonoSingleton<GameCore>
     private OverdaysWorker[] overdaysWorkers;
     [SerializeField]
     private GameObject overDaysArea;
+    [SerializeField]
+    private UpgradeButton AddNewMineshaftButton;
 
     [SerializeField]
     private float basicMineShaftManagerCost;
     [SerializeField]
     private float basicMineshaftUpgradeCost;
+    [SerializeField]
+    private float basicNewMineshaftCost;
     [SerializeField]
     private float overdaysUpgradeCost;
     [SerializeField]
@@ -45,7 +49,7 @@ public class GameCore : MonoSingleton<GameCore>
         var newShaft = Instantiate(mineShaftPrefab, newPosition, transform.rotation, parentObject.transform);
 
         mineShaftList.Add(newShaft);
-        elevatorWorker.loadingPositions.Add(newShaft.container);
+        elevatorWorker.loadingPositions.Add(newShaft.elevatorShaft);
         upgradeButtons.Add(newShaft.upgradeButton);
         managers.Add(newShaft.shaftManager);
         newShaft.shaftManager.OnManagerBought += HandleUpgradeBought;
@@ -64,6 +68,8 @@ public class GameCore : MonoSingleton<GameCore>
         RegisterManagers();
         RegisterUpgradeButtons();
         SetPricesAndMultipliers();
+        AddNewMineshaftButton.OnUpgraded += AddNewMineShaft;
+        AddNewMineshaftButton.upgradeCost = Mathf.RoundToInt(basicNewMineshaftCost);
     }
 
     private void SetPricesAndMultipliers()
@@ -79,6 +85,8 @@ public class GameCore : MonoSingleton<GameCore>
 
         Data.overdaysManagerCost = overdaysManagerCost;
         Data.overdaysUpgradeCost = overdaysUpgradeCost;
+
+        Data.basicNewMineshaftCost = basicNewMineshaftCost;
     }
 
     private void RegisterUpgradeButtons()

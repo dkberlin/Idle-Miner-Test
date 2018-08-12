@@ -14,6 +14,7 @@ public class DataContainer
     public float boughtUpgradeMultiplier { get; set; }
     public float activeManagerMultiplier { get; set; }
     public float basicMineshaftUpgradeCost { get; set; }
+    public float basicNewMineshaftCost { get; set; }
 
     private Dictionary<int, int> mineShaftCosts;
 
@@ -30,5 +31,10 @@ public class DataContainer
     public int GetManagerCost(int mineShaftFloor)
     {
         return Mathf.RoundToInt(basicMineShaftManagerCost * (mineShaftFloor * 0.7f));
+    }
+
+    public int GetNewMineshaftCost(int mineShaftFloor)
+    {
+        return Mathf.RoundToInt(basicNewMineshaftCost * (mineShaftFloor));
     }
 }

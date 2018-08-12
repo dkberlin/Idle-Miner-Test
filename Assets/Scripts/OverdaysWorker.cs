@@ -58,12 +58,14 @@ public class OverdaysWorker : WorkerBase
         {
             currentLoad = loadingContainer.currentCapacity;
             loadingContainer.currentCapacity = 0;
+            loadingContainer.SetContainerCapacityText();
         }
 
         if (spaceLeft < loadingContainer.currentCapacity)
         {
             currentLoad = capacity;
             loadingContainer.currentCapacity -= spaceLeft;
+            loadingContainer.SetContainerCapacityText();
         }
 
         if (currentLoad == capacity)
