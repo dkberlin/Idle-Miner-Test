@@ -12,9 +12,29 @@ public class OverdaysWorker : WorkerBase
 
     public event Action<int> OnMoneyEarned;
 
+    public int timesUpdated = 0;
+
+    private ContainerBase[] allContainers;
+
     private void Start()
     {
         spriteR = GetComponent<SpriteRenderer>();
+        allContainers = transform.parent.GetComponentsInChildren<ContainerBase>();
+
+        foreach (var t in allContainers)
+        {
+            if (t.tag == "shaftContainerElement")
+            {
+                loadingPosition = t;
+            }
+            else
+            {
+                unloadingPosition = t;
+            }
+        }
+
+        loadingContainer = loadingPosition;
+        manager = transform.parent.GetComponentInChildren<Manager>();
         manager.OnManagerBought += HandleManagerBought;
         manager.OnManagerActivated += HandleManagerActivated;
     }

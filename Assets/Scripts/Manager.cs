@@ -9,18 +9,18 @@ public class Manager : MonoBehaviour
 
     [SerializeField] private Sprite inactiveSprite;
 
-    [SerializeField] private Sprite managerAvailable;
+    public Sprite managerAvailable;
 
     public bool managerBought;
-    private bool managerCanBeBought;
+    public bool managerCanBeBought;
 
     public int managerCooldown;
 
     public int managerCost;
 
-    [SerializeField] private Sprite managerUnavailable;
+    public Sprite managerUnavailable;
 
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
 
     [SerializeField] private GameObject workingPlace;
 
@@ -47,20 +47,7 @@ public class Manager : MonoBehaviour
             managerBought = true;
             OnManagerBought();
             spriteRenderer.sprite = inactiveSprite;
-        }
-    }
-
-    public void CheckIfManagerAvailable(int earnedMoney)
-    {
-        if (managerCost <= earnedMoney)
-        {
-            managerCanBeBought = true;
-            spriteRenderer.sprite = managerAvailable;
-        }
-        else
-        {
-            managerCanBeBought = false;
-            spriteRenderer.sprite = managerUnavailable;
+            GameCore.Instance.CheckIfManagerAvailable();
         }
     }
 }

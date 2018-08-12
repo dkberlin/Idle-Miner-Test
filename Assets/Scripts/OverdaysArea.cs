@@ -11,7 +11,20 @@ public class OverdaysArea : MonoBehaviour
 
     [SerializeField] private UpgradeButton overdaysUpgradeButton;
 
+    [SerializeField] private ElevatorWorker elevatorGuy;
+
+    [SerializeField]
+    private UpgradeButton upgradeButton;
+    [SerializeField]
+    private ContainerBase overdaysContainer;
+
+    [SerializeField]
+    private ElevatorWorker elevatorContainer;
+
+    public OverdaysWorker workerPrefab;
+
     private OverdaysWorker[] workers;
+    private float multiplier;
 
     private void Start()
     {
@@ -29,6 +42,8 @@ public class OverdaysArea : MonoBehaviour
 
         elevatorManager.managerCost = Mathf.RoundToInt(GameCore.Instance.Data.ElevatorManagerCost);
         overdaysManager.managerCost = Mathf.RoundToInt(GameCore.Instance.Data.OverdaysManagerCost);
+
+        multiplier = GameCore.Instance.Data.BoughtUpgradeMultiplier;
     }
 
     private void HandleElevatorManagerBought()
@@ -66,11 +81,62 @@ public class OverdaysArea : MonoBehaviour
 
     private void HandleElevatorUpgraded()
     {
-        throw new NotImplementedException();
+        if (elevatorGuy.timesUpdated < elevatorGuy.maxSpeedUpgrades)
+        {
+            elevatorGuy.walkingSpeed = elevatorGuy.walkingSpeed * multiplier;
+        }
+        elevatorGuy.capacity = Mathf.RoundToInt(elevatorGuy.capacity * multiplier);
+        elevatorGuy.timeToLoad = elevatorGuy.timeToLoad - multiplier / 2;
+        elevatorGuy.timeToUnload = elevatorGuy.timeToUnload - multiplier / 2;
+        elevatorGuy.timesUpdated++;
+        elevatorGuy.SetElevatorWOrkerCapacityText();
+        elevatorUpgradeButton.upgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(elevatorUpgradeButton.upgradeCost);
     }
 
     private void HandleOverdaysUpgraded()
     {
-        throw new NotImplementedException();
+        workers = GetAllWorkers();
+        var allMinersMaxed = false;
+
+        foreach (var miner in workers)
+        {
+            if (miner.timesUpdated == 3)
+            {
+                allMinersMaxed = true;
+                continue;
+            }
+
+            if (miner.timesUpdated > 3)
+            {
+                continue;
+            }
+
+            miner.walkingSpeed = miner.walkingSpeed * multiplier;
+            miner.capacity = Mathf.RoundToInt(miner.capacity * multiplier);
+            miner.timeToLoad = miner.timeToLoad - multiplier / 2;
+            miner.timeToUnload = miner.timeToUnload - multiplier / 2;
+            miner.timesUpdated++;
+            allMinersMaxed = false;
+        }
+
+        if (allMinersMaxed)
+        {
+            AddNewMiner();
+        }
+
+        overdaysContainer.maxCapacity = Mathf.RoundToInt(overdaysContainer.maxCapacity * 1.7f);
+        overdaysContainer.SetContainerCapacityText();
+
+        var newUpgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(upgradeButton.upgradeCost);
+        upgradeButton.upgradeCost = newUpgradeCost;
+    }
+
+    private void AddNewMiner()
+    {
+        var newMiner = Instantiate(workerPrefab, transform.position, transform.rotation, transform);
+        if (overdaysManager.managerBought)
+        {
+            newMiner.active = true;
+        }
     }
 }

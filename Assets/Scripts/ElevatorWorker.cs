@@ -15,9 +15,11 @@ public class ElevatorWorker : WorkerBase
     private bool shouldBeMoving;
     private SpriteRenderer spriteR;
 
+    public int timesUpdated = 0;
+    public int maxSpeedUpgrades = 4;
+
     private void Start()
     {
-        //worker.onClick.AddListener(OnWorkerClicked);
         loadingPosition = loadingPositions[index];
         spriteR = GetComponent<SpriteRenderer>();
         groundFloorContainer.SetContainerCapacityText();

@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class UpgradeButton : MonoBehaviour
 {
-    private SpriteRenderer spriteR;
+    public SpriteRenderer spriteR;
 
-    [SerializeField] private Sprite upgradeAvailable;
+    public Sprite upgradeAvailable;
 
-    private bool upgradeCanBeBought;
+    public bool upgradeCanBeBought;
 
     public int upgradeCost;
 
-    [SerializeField] private Sprite upgradeUnavailable;
+    public Sprite upgradeUnavailable;
 
     [SerializeField] private GameObject workingArea;
 
@@ -29,22 +29,8 @@ public class UpgradeButton : MonoBehaviour
             return;
         }
 
+        GameCore.Instance.CheckIfUpgradeAvailable();
         GameCore.Instance.Data.EarnedMoney -= upgradeCost;
         OnUpgraded();
-        CheckIfUpgradeAvailable(GameCore.Instance.Data.EarnedMoney);
-    }
-
-    public void CheckIfUpgradeAvailable(int currentMoney)
-    {
-        if (upgradeCost <= currentMoney)
-        {
-            upgradeCanBeBought = true;
-            spriteR.sprite = upgradeAvailable;
-        }
-        else
-        {
-            upgradeCanBeBought = false;
-            spriteR.sprite = upgradeUnavailable;
-        }
     }
 }

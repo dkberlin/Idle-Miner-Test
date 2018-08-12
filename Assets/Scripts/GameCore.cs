@@ -105,13 +105,8 @@ public class GameCore : MonoSingleton<GameCore>
 
     private void HandleUpgradeBought()
     {
-        foreach (var manager in managers)
-        {
-            if (!manager.managerBought)
-            {
-                manager.CheckIfManagerAvailable(Data.EarnedMoney);
-            }
-        }
+        CheckIfManagerAvailable();
+        CheckIfUpgradeAvailable();
 
         moneyInfo.text = "Money earned: " + Data.EarnedMoney;
     }
@@ -133,16 +128,40 @@ public class GameCore : MonoSingleton<GameCore>
     {
         Data.EarnedMoney += income;
         moneyInfo.text = "Money earned: " + Data.EarnedMoney;
-        foreach (var button in upgradeButtons)
-        {
-            button.CheckIfUpgradeAvailable(Data.EarnedMoney);
-        }
+        CheckIfUpgradeAvailable();
+        CheckIfManagerAvailable();
+    }
 
+    public void CheckIfUpgradeAvailable()
+    {
+        foreach (var upgradeButton in upgradeButtons)
+        {
+            if (upgradeButton.upgradeCost <= Data.EarnedMoney)
+            {
+                upgradeButton.upgradeCanBeBought = true;
+                upgradeButton.spriteR.sprite = upgradeButton.upgradeAvailable;
+            }
+            else
+            {
+                upgradeButton.upgradeCanBeBought = false;
+                upgradeButton.spriteR.sprite = upgradeButton.upgradeUnavailable;
+            }
+        }
+    }
+
+    public void CheckIfManagerAvailable()
+    {
         foreach (var manager in managers)
         {
-            if (!manager.managerBought)
+            if (manager.managerCost <= Data.EarnedMoney)
             {
-                manager.CheckIfManagerAvailable(Data.EarnedMoney);
+                manager.managerCanBeBought = true;
+                manager.spriteRenderer.sprite = manager.managerAvailable;
+            }
+            else
+            {
+                manager.managerCanBeBought = false;
+                manager.spriteRenderer.sprite = manager.managerUnavailable;
             }
         }
     }

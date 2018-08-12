@@ -12,8 +12,6 @@ public class MineShaft : MonoBehaviour
 
     [SerializeField] private int mineshaftFloor;
 
-    //[SerializeField]
-    //private int upgradeCost;
     private Miner[] mineShaftWorkers;
     private float multiplier;
 
@@ -89,6 +87,9 @@ public class MineShaft : MonoBehaviour
         {
             AddNewMiner();
         }
+
+        elevatorShaft.maxCapacity = Mathf.RoundToInt(elevatorShaft.maxCapacity * 1.7f);
+        elevatorShaft.SetContainerCapacityText();
 
         var newUpgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(upgradeButton.upgradeCost, mineshaftFloor);
         upgradeButton.upgradeCost = newUpgradeCost;
