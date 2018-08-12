@@ -1,37 +1,30 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public abstract class WorkerBase : MonoBehaviour
 {
-    public float walkingSpeed;
+    public bool active;
 
-    public bool hasManager = false;
+    [SerializeField] protected Sprite busyIcon;
 
     public int capacity;
 
-    [SerializeField]
-    protected ContainerBase loadingPosition;
+    protected int currentLoad;
 
-    [SerializeField]
-    protected ContainerBase unloadingPosition;
+    public bool hasManager = false;
+    protected bool isFullyLoaded = false;
+
+    [SerializeField] protected ContainerBase loadingPosition;
 
     public float timeToLoad;
 
     public float timeToUnload;
 
-    [SerializeField]
-    protected Sprite workerIcon;
+    [SerializeField] protected ContainerBase unloadingPosition;
 
-    [SerializeField]
-    protected Sprite busyIcon;
+    public float walkingSpeed;
 
-    protected int currentLoad;
+    [SerializeField] protected Sprite workerIcon;
 
-    public bool active;
-    protected bool isFullyLoaded = false;
     public abstract void OnWorkerClicked();
     public abstract void OnArrivedAtLoadingPosition();
     public abstract void OnArrivedAtUnloadingPosition();

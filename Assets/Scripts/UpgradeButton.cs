@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UpgradeButton : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject workingArea;
-
-    [SerializeField]
-    Sprite upgradeAvailable;
-
-    [SerializeField]
-    Sprite upgradeUnavailable;
-
     private SpriteRenderer spriteR;
 
+    [SerializeField] private Sprite upgradeAvailable;
+
+    private bool upgradeCanBeBought;
+
     public int upgradeCost;
-    private bool upgradeCanBeBought = false;
+
+    [SerializeField] private Sprite upgradeUnavailable;
+
+    [SerializeField] private GameObject workingArea;
 
     public event Action OnUpgraded;
 
@@ -25,14 +21,17 @@ public class UpgradeButton : MonoBehaviour
     {
         spriteR = GetComponent<SpriteRenderer>();
     }
+
     public void OnMouseDown()
     {
-        if (upgradeCanBeBought && OnUpgraded != null)
+        if (!upgradeCanBeBought || OnUpgraded == null)
         {
-            GameCore.Instance.Data.earnedMoney -= upgradeCost;
-            OnUpgraded();
-            CheckIfUpgradeAvailable(GameCore.Instance.Data.earnedMoney);
+            return;
         }
+
+        GameCore.Instance.Data.EarnedMoney -= upgradeCost;
+        OnUpgraded();
+        CheckIfUpgradeAvailable(GameCore.Instance.Data.EarnedMoney);
     }
 
     public void CheckIfUpgradeAvailable(int currentMoney)

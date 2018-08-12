@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Miner : WorkerBase
 {
-    [SerializeField]
-    private MineContainer shaftContainer;
+    private MineShaft minerMineShaft;
+
+    [SerializeField] private MineContainer shaftContainer;
 
     private SpriteRenderer spriteRenderer;
-
-    private MineShaft minerMineShaft;
 
     public int timesUpdated = 0;
 
@@ -33,13 +30,14 @@ public class Miner : WorkerBase
         spriteRenderer.sprite = busyIcon;
         StartCoroutine(LoadCapacity());
     }
+
     public override void OnArrivedAtUnloadingPosition()
     {
         spriteRenderer.sprite = busyIcon;
         StartCoroutine(UnloadCapacity());
     }
 
-    IEnumerator LoadCapacity()
+    private IEnumerator LoadCapacity()
     {
         yield return new WaitForSeconds(timeToLoad);
         currentLoad = capacity;
@@ -49,17 +47,17 @@ public class Miner : WorkerBase
         StopAllCoroutines();
     }
 
-    IEnumerator UnloadCapacity()
+    private IEnumerator UnloadCapacity()
     {
         yield return new WaitForSeconds(timeToUnload);
 
-        int spaceInContainer = shaftContainer.maxCapacity - shaftContainer.currentCapacity;
-        
+        var spaceInContainer = shaftContainer.maxCapacity - shaftContainer.currentCapacity;
+
         if (spaceInContainer == 0)
         {
             Debug.LogWarning("Miner cant unload.");
-        }    
-        
+        }
+
         if (spaceInContainer >= currentLoad)
         {
             shaftContainer.currentCapacity += currentLoad;
@@ -69,18 +67,20 @@ public class Miner : WorkerBase
         }
         else
         {
-            int loadToStore = currentLoad - spaceInContainer;
+            var loadToStore = currentLoad - spaceInContainer;
             currentLoad -= loadToStore;
             shaftContainer.currentCapacity = shaftContainer.maxCapacity;
             shaftContainer.SetContainerCapacityText();
             shaftContainer.isFullyLoaded = true;
             isFullyLoaded = false;
         }
+
         spriteRenderer.sprite = workerIcon;
         if (!hasManager)
         {
             active = false;
         }
+
         StopAllCoroutines();
     }
 
@@ -91,18 +91,20 @@ public class Miner : WorkerBase
             active = true;
         }
     }
-    
+
     private void Update()
     {
         if (active)
         {
             if (!isFullyLoaded)
             {
-                transform.position = Vector2.MoveTowards(transform.position, loadingPosition.transform.position, walkingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, loadingPosition.transform.position,
+                    walkingSpeed * Time.deltaTime);
             }
             else if (isFullyLoaded)
             {
-                transform.position = Vector2.MoveTowards(transform.position, unloadingPosition.transform.position, walkingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, unloadingPosition.transform.position,
+                    walkingSpeed * Time.deltaTime);
             }
         }
 

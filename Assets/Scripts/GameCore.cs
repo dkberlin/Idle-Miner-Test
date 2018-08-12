@@ -1,64 +1,46 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameCore : MonoSingleton<GameCore>
 {
-    [SerializeField]
-    private MineShaft mineShaftPrefab;
-    [SerializeField]
-    public List<UpgradeButton> upgradeButtons;
-    public List<Manager> managers;
-    public float gapBetweenMineShafts;
-    public GameObject parentObject;
-    public List<MineShaft> mineShaftList;
+    [SerializeField] private float activeManagerMultiplier;
+
+    [SerializeField] private UpgradeButton AddNewMineshaftButton;
+
+    [SerializeField] private float basicMineShaftManagerCost;
+
+    [SerializeField] private float basicMineshaftUpgradeCost;
+
+    [SerializeField] private float basicNewMineshaftCost;
+
+    [SerializeField] private float boughtUpgradeMultiplier;
+
+    [SerializeField] private float elevatorManagerCost;
+
+    [SerializeField] private float elevatorUpgradeCost;
+
     public ElevatorWorker elevatorWorker;
-    public DataContainer Data { get; set; }
+    public float gapBetweenMineShafts;
+    public List<Manager> managers;
+    public List<MineShaft> mineShaftList;
+
+    [SerializeField] private MineShaft mineShaftPrefab;
+
     public Text moneyInfo;
+
+    [SerializeField] private GameObject overDaysArea;
+
+    [SerializeField] private float overdaysManagerCost;
+
+    [SerializeField] private float overdaysUpgradeCost;
+
     private OverdaysWorker[] overdaysWorkers;
-    [SerializeField]
-    private GameObject overDaysArea;
-    [SerializeField]
-    private UpgradeButton AddNewMineshaftButton;
+    public GameObject parentObject;
 
-    [SerializeField]
-    private float basicMineShaftManagerCost;
-    [SerializeField]
-    private float basicMineshaftUpgradeCost;
-    [SerializeField]
-    private float basicNewMineshaftCost;
-    [SerializeField]
-    private float overdaysUpgradeCost;
-    [SerializeField]
-    private float overdaysManagerCost;
-    [SerializeField]
-    private float elevatorUpgradeCost;
-    [SerializeField]
-    private float elevatorManagerCost;
-    [SerializeField]
-    private float boughtUpgradeMultiplier;
-    [SerializeField]
-    private float activeManagerMultiplier;
+    [SerializeField] public List<UpgradeButton> upgradeButtons;
 
-    public void AddNewMineShaft()
-    {
-        Vector2 lowestShaftPosition = mineShaftList[mineShaftList.Count - 1].transform.position;
-        Vector2 newPosition = new Vector2(lowestShaftPosition.x, lowestShaftPosition.y - gapBetweenMineShafts);
-        var newShaft = Instantiate(mineShaftPrefab, newPosition, transform.rotation, parentObject.transform);
-
-        mineShaftList.Add(newShaft);
-        elevatorWorker.loadingPositions.Add(newShaft.elevatorShaft);
-        upgradeButtons.Add(newShaft.upgradeButton);
-        managers.Add(newShaft.shaftManager);
-        newShaft.shaftManager.OnManagerBought += HandleUpgradeBought;
-    }
-
-    //public void AddNewMiner(MineShaft mineShaft, Miner miner)
-    //{
-    //    Instantiate(miner, new Vector2 (0,0) , transform.rotation, mineShaft.transform);
-    //}
+    public DataContainer Data { get; set; }
 
     private void Awake()
     {
@@ -72,21 +54,37 @@ public class GameCore : MonoSingleton<GameCore>
         AddNewMineshaftButton.upgradeCost = Mathf.RoundToInt(basicNewMineshaftCost);
     }
 
+    public void AddNewMineShaft()
+    {
+        Vector2 lowestShaftPosition = mineShaftList[mineShaftList.Count - 1].transform.position;
+        var newPosition = new Vector2(lowestShaftPosition.x, lowestShaftPosition.y - gapBetweenMineShafts);
+        var newShaft = Instantiate(mineShaftPrefab, newPosition, transform.rotation, parentObject.transform);
+
+        mineShaftList.Add(newShaft);
+        elevatorWorker.loadingPositions.Add(newShaft.elevatorShaft);
+        upgradeButtons.Add(newShaft.upgradeButton);
+        managers.Add(newShaft.shaftManager);
+        newShaft.shaftManager.OnManagerBought += HandleUpgradeBought;
+        newShaft.isFirstMineshaft = false;
+        int lastShaftUpgradeCost = mineShaftList[mineShaftList.Count - 2].upgradeButton.upgradeCost;
+        newShaft.upgradeButton.upgradeCost = Data.GetNewUpgradeCost(lastShaftUpgradeCost, mineShaftList.Count);
+    }
+
     private void SetPricesAndMultipliers()
     {
-        Data.activeManagerMultiplier = activeManagerMultiplier;
-        Data.boughtUpgradeMultiplier = boughtUpgradeMultiplier;
+        Data.ActiveManagerMultiplier = activeManagerMultiplier;
+        Data.BoughtUpgradeMultiplier = boughtUpgradeMultiplier;
 
-        Data.elevatorManagerCost = elevatorManagerCost;
-        Data.elevatorUpgradeCost = elevatorUpgradeCost;
+        Data.ElevatorManagerCost = elevatorManagerCost;
+        Data.ElevatorUpgradeCost = elevatorUpgradeCost;
 
-        Data.basicMineShaftManagerCost = basicMineShaftManagerCost;
-        Data.basicMineshaftUpgradeCost = basicMineshaftUpgradeCost;
+        Data.BasicMineShaftManagerCost = basicMineShaftManagerCost;
+        Data.BasicMineshaftUpgradeCost = basicMineshaftUpgradeCost;
 
-        Data.overdaysManagerCost = overdaysManagerCost;
-        Data.overdaysUpgradeCost = overdaysUpgradeCost;
+        Data.OverdaysManagerCost = overdaysManagerCost;
+        Data.OverdaysUpgradeCost = overdaysUpgradeCost;
 
-        Data.basicNewMineshaftCost = basicNewMineshaftCost;
+        Data.BasicNewMineshaftCost = basicNewMineshaftCost;
     }
 
     private void RegisterUpgradeButtons()
@@ -111,11 +109,11 @@ public class GameCore : MonoSingleton<GameCore>
         {
             if (!manager.managerBought)
             {
-                manager.CheckIfManagerAvailable(Data.earnedMoney);
+                manager.CheckIfManagerAvailable(Data.EarnedMoney);
             }
         }
 
-        moneyInfo.text = ("Money earned: " + Data.earnedMoney);
+        moneyInfo.text = "Money earned: " + Data.EarnedMoney;
     }
 
     private void RegisterWorkers()
@@ -131,24 +129,20 @@ public class GameCore : MonoSingleton<GameCore>
         return overDaysArea.GetComponentsInChildren<OverdaysWorker>();
     }
 
-    //public void UpdateMoneyUI()
-    //{
-    //    moneyInfo.text = ("Money earned: " + GameCore.Instance.Data.earnedMoney);
-    //}
-
     private void HandleMoneyIncome(int income)
     {
-        Data.earnedMoney += income;
-        moneyInfo.text = ("Money earned: " + Data.earnedMoney);
-        foreach(var button in upgradeButtons)
+        Data.EarnedMoney += income;
+        moneyInfo.text = "Money earned: " + Data.EarnedMoney;
+        foreach (var button in upgradeButtons)
         {
-            button.CheckIfUpgradeAvailable(Data.earnedMoney);
+            button.CheckIfUpgradeAvailable(Data.EarnedMoney);
         }
+
         foreach (var manager in managers)
         {
             if (!manager.managerBought)
             {
-                manager.CheckIfManagerAvailable(Data.earnedMoney);
+                manager.CheckIfManagerAvailable(Data.EarnedMoney);
             }
         }
     }

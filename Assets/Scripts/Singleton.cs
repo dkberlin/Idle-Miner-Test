@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
@@ -11,13 +9,11 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
         get
         {
             if (instance == null)
-                instance = (T)GameObject.FindObjectOfType(typeof(T));
+                instance = (T) FindObjectOfType(typeof(T));
 
-            if (instance == null)
-            {
-                GameObject go = new GameObject(typeof(T).ToString());
-                go.AddComponent(typeof(T));
-            }
+            if (instance != null) return instance;
+            var go = new GameObject(typeof(T).ToString());
+            go.AddComponent(typeof(T));
 
             return instance;
         }

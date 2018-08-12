@@ -1,35 +1,33 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject workingPlace;
+    public bool activated = false;
 
-    [SerializeField]
-    private Sprite managerAvailable;
+    [SerializeField] private Sprite activeSprite;
 
-    [SerializeField]
-    private Sprite managerUnavailable;
+    [SerializeField] private Sprite inactiveSprite;
+
+    [SerializeField] private Sprite managerAvailable;
+
+    public bool managerBought;
+    private bool managerCanBeBought;
+
+    public int managerCooldown;
 
     public int managerCost;
-    private bool managerCanBeBought = false;
 
-    public event Action OnManagerBought;
-    public event Action OnManagerActivated;
-
-    public bool activated = false;
-    public float managerBonus { get; set; }
-    [SerializeField]
-    private Sprite activeSprite;
-    [SerializeField]
-    private Sprite inactiveSprite;
+    [SerializeField] private Sprite managerUnavailable;
 
     private SpriteRenderer spriteRenderer;
 
-    public bool managerBought = false;
+    [SerializeField] private GameObject workingPlace;
+
+    public float ManagerBonus { get; set; }
+
+    public event Action OnManagerBought;
+    public event Action OnManagerActivated;
 
     private void Start()
     {
@@ -45,7 +43,7 @@ public class Manager : MonoBehaviour
 
         else if (!managerBought && managerCanBeBought && OnManagerBought != null)
         {
-            GameCore.Instance.Data.earnedMoney -= managerCost;
+            GameCore.Instance.Data.EarnedMoney -= managerCost;
             managerBought = true;
             OnManagerBought();
             spriteRenderer.sprite = inactiveSprite;

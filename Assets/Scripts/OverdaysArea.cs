@@ -1,44 +1,39 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OverdaysArea : MonoBehaviour
 {
-    [SerializeField]
-    private UpgradeButton elevatorUpgradeButton;
+    [SerializeField] private Manager elevatorManager;
 
-    [SerializeField]
-    private UpgradeButton overdaysUpgradeButton;
+    [SerializeField] private UpgradeButton elevatorUpgradeButton;
 
-    [SerializeField]
-    private Manager overdaysManager;
-    [SerializeField]
-    private Manager elevatorManager;
+    [SerializeField] private Manager overdaysManager;
+
+    [SerializeField] private UpgradeButton overdaysUpgradeButton;
 
     private OverdaysWorker[] workers;
 
     private void Start()
     {
-        elevatorUpgradeButton.upgradeCost = Mathf.RoundToInt(GameCore.Instance.Data.elevatorUpgradeCost);
+        elevatorUpgradeButton.upgradeCost = Mathf.RoundToInt(GameCore.Instance.Data.ElevatorUpgradeCost);
         elevatorUpgradeButton.OnUpgraded += HandleElevatorUpgraded;
         elevatorManager.OnManagerBought += HandleElevatorManagerBought;
         elevatorManager.OnManagerActivated += HandleElevatorManagerActivated;
 
-        overdaysUpgradeButton.upgradeCost = Mathf.RoundToInt(GameCore.Instance.Data.overdaysUpgradeCost);
+        overdaysUpgradeButton.upgradeCost = Mathf.RoundToInt(GameCore.Instance.Data.OverdaysUpgradeCost);
         overdaysUpgradeButton.OnUpgraded += HandleOverdaysUpgraded;
         overdaysManager.OnManagerBought += HandleOverdaysManagerBought;
         overdaysManager.OnManagerActivated += HandleOverdaysManagerActivated;
 
         workers = GetComponentsInChildren<OverdaysWorker>();
 
-        elevatorManager.managerCost = Mathf.RoundToInt(GameCore.Instance.Data.elevatorManagerCost);
-        overdaysManager.managerCost = Mathf.RoundToInt(GameCore.Instance.Data.overdaysManagerCost);
+        elevatorManager.managerCost = Mathf.RoundToInt(GameCore.Instance.Data.ElevatorManagerCost);
+        overdaysManager.managerCost = Mathf.RoundToInt(GameCore.Instance.Data.OverdaysManagerCost);
     }
 
     private void HandleElevatorManagerBought()
     {
-        ElevatorWorker elevatorGuy = GetComponentInChildren<ElevatorWorker>();
+        var elevatorGuy = GetComponentInChildren<ElevatorWorker>();
         elevatorGuy.active = true;
         elevatorGuy.hasManager = true;
     }

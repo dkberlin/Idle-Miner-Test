@@ -5,40 +5,15 @@ using UnityEngine;
 
 public class ElevatorWorker : WorkerBase
 {
-    public List<MineContainer> loadingPositions;
     public ContainerBase groundFloorContainer;
-    //public event Action OnArrivedAtLoadingPoint;
-    //public event Action OnArrivedAtUnloadingPoint;
-
-    //public ContainerBase currentLoadingPosition
-    //{
-    //    get { return loadingPosition; }
-    //}
-    //public int spaceLeftInElevator
-    //{
-    //    get { return capacity - currentLoad; }
-    //}
-    //public int currentIndex
-    //{
-    //    get { return index; }
-    //    set { index = value; }
-    //}
-    //public int amountOfFloors
-    //{
-    //    get { return loadingPositions.Count; }
-    //}
-    //public int currentLoadInElevator
-    //{
-    //    get { return currentLoad; }
-    //    set { currentLoad = value; }
-    //}
-    [SerializeField]
-    private Manager manager;
 
     private int index = 1;
-    private SpriteRenderer spriteR;
+    public List<MineContainer> loadingPositions;
+
+    [SerializeField] private Manager manager;
 
     private bool shouldBeMoving;
+    private SpriteRenderer spriteR;
 
     private void Start()
     {
@@ -88,16 +63,17 @@ public class ElevatorWorker : WorkerBase
         {
             spriteR.sprite = busyIcon;
         }
+
         StartCoroutine(UnloadCapacity());
 
         loadingPosition = loadingPositions[index];
     }
 
-    IEnumerator LoadCapacity()
+    private IEnumerator LoadCapacity()
     {
         yield return new WaitForSeconds(timeToLoad);
 
-        int spaceLeftInElevator = capacity - currentLoad;
+        var spaceLeftInElevator = capacity - currentLoad;
 
         if (spaceLeftInElevator == 0)
         {
@@ -123,7 +99,7 @@ public class ElevatorWorker : WorkerBase
         }
 
 
-        if (index+1 < loadingPositions.Count)
+        if (index + 1 < loadingPositions.Count)
         {
             index++;
         }
@@ -138,10 +114,10 @@ public class ElevatorWorker : WorkerBase
         StopAllCoroutines();
     }
 
-    IEnumerator UnloadCapacity()
+    private IEnumerator UnloadCapacity()
     {
         yield return new WaitForSeconds(timeToUnload);
-        int spaceLeftInGroundFloorContainer = groundFloorContainer.maxCapacity - groundFloorContainer.currentCapacity;
+        var spaceLeftInGroundFloorContainer = groundFloorContainer.maxCapacity - groundFloorContainer.currentCapacity;
 
         if (currentLoad <= spaceLeftInGroundFloorContainer)
         {
@@ -170,6 +146,7 @@ public class ElevatorWorker : WorkerBase
         {
             active = false;
         }
+
         spriteR.sprite = workerIcon;
         index = 1;
         StopAllCoroutines();
@@ -179,39 +156,45 @@ public class ElevatorWorker : WorkerBase
     {
         foreach (var loadingPos in loadingPositions)
         {
-            if (loadingPos.currentCapacity > 0 && loadingPositions[0] != loadingPos)
+            if (loadingPos.currentCapacity <= 0 || loadingPositions[0] == loadingPos)
             {
-                active = true;
-                shouldBeMoving = true;
-                loadingPosition = loadingPositions[index];
-                break;
+                continue;
             }
+            active = true;
+            shouldBeMoving = true;
+            loadingPosition = loadingPositions[index];
+            break;
         }
     }
 
     public void SetElevatorWOrkerCapacityText()
     {
-        transform.GetComponentInChildren<TextMesh>().text = (currentLoad + "/" + capacity);
+        transform.GetComponentInChildren<TextMesh>().text = currentLoad + "/" + capacity;
     }
 
     private void Update()
     {
-        if (shouldBeMoving)
+        if (!shouldBeMoving)
         {
-            if (active)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, loadingPositions[index].transform.position, walkingSpeed * Time.deltaTime);
-            }
+            return;
+        }
 
-            if (active && index != 0 && Vector2.Distance(transform.position, loadingPosition.transform.position) < 0.01f)
-            {
-                OnArrivedAtLoadingPosition();
-            }
+        if (active)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, loadingPositions[index].transform.position,
+                walkingSpeed * Time.deltaTime);
+        }
 
-            if (currentLoad > 0 && active && Vector2.Distance(transform.position, unloadingPosition.transform.position) < 0.01f)
-            {
-                OnArrivedAtUnloadingPosition();
-            }
+        if (active && index != 0 &&
+            Vector2.Distance(transform.position, loadingPosition.transform.position) < 0.01f)
+        {
+            OnArrivedAtLoadingPosition();
+        }
+
+        if (currentLoad > 0 && active &&
+            Vector2.Distance(transform.position, unloadingPosition.transform.position) < 0.01f)
+        {
+            OnArrivedAtUnloadingPosition();
         }
     }
 }

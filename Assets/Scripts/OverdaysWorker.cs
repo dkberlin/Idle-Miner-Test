@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class OverdaysWorker : WorkerBase
 {
-    [SerializeField]
-    private ContainerBase loadingContainer;
-    [SerializeField]
-    private Manager manager;
+    [SerializeField] private ContainerBase loadingContainer;
+
+    [SerializeField] private Manager manager;
 
     private SpriteRenderer spriteR;
 
@@ -42,17 +39,18 @@ public class OverdaysWorker : WorkerBase
         spriteR.sprite = busyIcon;
         StartCoroutine(LoadCapacity());
     }
+
     public override void OnArrivedAtUnloadingPosition()
     {
         spriteR.sprite = busyIcon;
         StartCoroutine(UnloadCapacity());
     }
 
-    IEnumerator LoadCapacity()
+    private IEnumerator LoadCapacity()
     {
         yield return new WaitForSeconds(timeToLoad);
 
-        int spaceLeft = capacity - currentLoad;
+        var spaceLeft = capacity - currentLoad;
 
         if (spaceLeft >= loadingContainer.currentCapacity)
         {
@@ -72,6 +70,7 @@ public class OverdaysWorker : WorkerBase
         {
             Debug.LogWarning("Overdays Worker cant load.");
         }
+
         Debug.LogWarning("Overdays worker has currently loaded " + currentLoad);
         isFullyLoaded = true;
         spriteR.sprite = workerIcon;
@@ -79,7 +78,7 @@ public class OverdaysWorker : WorkerBase
         StopAllCoroutines();
     }
 
-    IEnumerator UnloadCapacity()
+    private IEnumerator UnloadCapacity()
     {
         yield return new WaitForSeconds(timeToUnload);
         if (OnMoneyEarned != null)
@@ -87,14 +86,14 @@ public class OverdaysWorker : WorkerBase
             OnMoneyEarned(currentLoad);
             currentLoad = 0;
         }
-        //GameCore.Instance.Data.earnedMoney += currentLoad;
-        //GameCore.Instance.UpdateMoneyUI();
+
         isFullyLoaded = false;
 
         if (!hasManager)
         {
             active = false;
         }
+
         spriteR.sprite = workerIcon;
 
         StopAllCoroutines();
@@ -107,18 +106,20 @@ public class OverdaysWorker : WorkerBase
             active = true;
         }
     }
-    
+
     private void Update()
     {
         if (active)
         {
             if (!isFullyLoaded)
             {
-                transform.position = Vector2.MoveTowards(transform.position, loadingPosition.transform.position, walkingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, loadingPosition.transform.position,
+                    walkingSpeed * Time.deltaTime);
             }
             else if (isFullyLoaded)
             {
-                transform.position = Vector2.MoveTowards(transform.position, unloadingPosition.transform.position, walkingSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, unloadingPosition.transform.position,
+                    walkingSpeed * Time.deltaTime);
             }
         }
 

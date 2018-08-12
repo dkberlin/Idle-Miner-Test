@@ -1,35 +1,39 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MineShaft : MonoBehaviour
 {
-    [SerializeField]
-    private Miner minerPrefab;
     public MineContainer container;
-    public UpgradeButton upgradeButton;
+    public MineContainer elevatorShaft;
+    public ContainerBase endOfMine;
+    public bool isFirstMineshaft = true;
+
+    [SerializeField] private Miner minerPrefab;
+
+    [SerializeField] private int mineshaftFloor;
+
     //[SerializeField]
     //private int upgradeCost;
     private Miner[] mineShaftWorkers;
-    [SerializeField]
-    private int mineshaftFloor;
     private float multiplier;
-    public ContainerBase endOfMine;
-    public MineContainer elevatorShaft;
-    [SerializeField]
-    public Manager shaftManager;
+
+    [SerializeField] public Manager shaftManager;
+
+    public UpgradeButton upgradeButton;
 
     private void Start()
     {
+        if (isFirstMineshaft)
+        {
+            upgradeButton.upgradeCost = Mathf.RoundToInt(GameCore.Instance.Data.BasicMineshaftUpgradeCost);
+        }
+
         upgradeButton.OnUpgraded += HandleUpgrade;
         mineShaftWorkers = GetComponentsInChildren<Miner>();
-        upgradeButton.upgradeCost = Mathf.RoundToInt(GameCore.Instance.Data.basicMineshaftUpgradeCost);
-        //upgradeButton.upgradeCost = upgradeCost;
         shaftManager.OnManagerBought += HandleManagerBought;
         shaftManager.OnManagerActivated += HandleManagerActivated;
         elevatorShaft.SetContainerCapacityText();
-        multiplier = GameCore.Instance.Data.boughtUpgradeMultiplier;
+        multiplier = GameCore.Instance.Data.BoughtUpgradeMultiplier;
         mineshaftFloor = GameCore.Instance.mineShaftList.Count;
         shaftManager.managerCost = GameCore.Instance.Data.GetManagerCost(mineshaftFloor);
     }
@@ -58,7 +62,7 @@ public class MineShaft : MonoBehaviour
     private void HandleUpgrade()
     {
         mineShaftWorkers = GetAllMineShaftWorkers();
-        bool allMinersMaxed = false;
+        var allMinersMaxed = false;
 
         foreach (var miner in mineShaftWorkers)
         {
@@ -68,33 +72,32 @@ public class MineShaft : MonoBehaviour
                 continue;
             }
 
-            if (miner.timesUpdated <= 3)
+            if (miner.timesUpdated > 3)
             {
-                miner.walkingSpeed = miner.walkingSpeed * multiplier * mineshaftFloor;
-                miner.capacity = (int)Mathf.RoundToInt(miner.capacity * multiplier * mineshaftFloor);
-                miner.timeToLoad = miner.timeToLoad - ((multiplier * mineshaftFloor)/3);
-                miner.timeToUnload = miner.timeToUnload - ((multiplier * mineshaftFloor) / 3);
-                miner.timesUpdated++;
-                allMinersMaxed = false;
+                continue;
             }
+
+            miner.walkingSpeed = miner.walkingSpeed * multiplier * mineshaftFloor;
+            miner.capacity = Mathf.RoundToInt(miner.capacity * multiplier * mineshaftFloor);
+            miner.timeToLoad = miner.timeToLoad - multiplier * mineshaftFloor / 3;
+            miner.timeToUnload = miner.timeToUnload - multiplier * mineshaftFloor / 3;
+            miner.timesUpdated++;
+            allMinersMaxed = false;
         }
 
-        if (allMinersMaxed == true)
+        if (allMinersMaxed)
         {
-            //GameCore.Instance.AddNewMiner(gameObject, minerPrefab);
             AddNewMiner();
         }
 
-        //int newUpgradeCost = (int)Mathf.RoundToInt(upgradeCost * multiplier * upgradeLevel);
-        int newUpgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(upgradeButton.upgradeCost, mineshaftFloor);
+        var newUpgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(upgradeButton.upgradeCost, mineshaftFloor);
         upgradeButton.upgradeCost = newUpgradeCost;
-        //upgradeCost = newUpgradeCost;
     }
 
     private void AddNewMiner()
     {
         var newMiner = Instantiate(minerPrefab, transform.position, transform.rotation, transform);
-        if (shaftManager.managerBought == true)
+        if (shaftManager.managerBought)
         {
             newMiner.active = true;
         }
