@@ -454,7 +454,7 @@ MonoBehaviour:
   managerAvailable: {fileID: 21300000, guid: d01eb08899ce70e4bacaeeb255e8fa49, type: 3}
   managerBought: 0
   managerCanBeBought: 0
-  managerBonusTime: 0
+  managerBonusTime: 15
   managerCost: 0
   managerUnavailable: {fileID: 21300000, guid: 4f4daf881c6b8a14c9b92fa2f1315d24, type: 3}
   spriteRenderer: {fileID: 0}
@@ -1538,7 +1538,7 @@ MonoBehaviour:
   managerAvailable: {fileID: 21300000, guid: d01eb08899ce70e4bacaeeb255e8fa49, type: 3}
   managerBought: 0
   managerCanBeBought: 0
-  managerBonusTime: 0
+  managerBonusTime: 12
   managerCost: 0
   managerUnavailable: {fileID: 21300000, guid: 4f4daf881c6b8a14c9b92fa2f1315d24, type: 3}
   spriteRenderer: {fileID: 0}
@@ -2055,7 +2055,7 @@ MonoBehaviour:
   loadingPositions:
   - {fileID: 579418287}
   - {fileID: 1334453428}
-  manager: {fileID: 133778634}
+  shouldBeMoving: 0
   timesUpdated: 0
   maxSpeedUpgrades: 4
 --- !u!222 &1324771680

@@ -10,9 +10,7 @@ public class ElevatorWorker : WorkerBase
     private int index = 1;
     public List<MineContainer> loadingPositions;
 
-    [SerializeField] private Manager manager;
-
-    private bool shouldBeMoving;
+    public bool shouldBeMoving;
     private SpriteRenderer spriteR;
 
     public int timesUpdated = 0;
@@ -24,20 +22,6 @@ public class ElevatorWorker : WorkerBase
         spriteR = GetComponent<SpriteRenderer>();
         groundFloorContainer.SetContainerCapacityText();
         SetElevatorWOrkerCapacityText();
-        manager.OnManagerBought += HandleManagerBought;
-        manager.OnManagerActivated += HandleManagerActivated;
-    }
-
-    private void HandleManagerActivated()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void HandleManagerBought()
-    {
-        hasManager = true;
-        active = true;
-        shouldBeMoving = true;
     }
 
     private void OnMouseDown()

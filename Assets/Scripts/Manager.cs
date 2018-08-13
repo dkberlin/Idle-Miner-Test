@@ -22,7 +22,7 @@ public class Manager : MonoBehaviour
 
     public SpriteRenderer spriteRenderer;
 
-    [SerializeField] private GameObject workingPlace;
+    public GameObject workingPlace;
 
     public event Action OnManagerBought;
     public event Action OnManagerActivated;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class OverdaysArea : MonoBehaviour
@@ -51,11 +52,18 @@ public class OverdaysArea : MonoBehaviour
         //var elevatorGuy = GetComponentInChildren<ElevatorWorker>();
         elevatorGuy.active = true;
         elevatorGuy.hasManager = true;
+        elevatorGuy.shouldBeMoving = true;
     }
 
     private void HandleElevatorManagerActivated()
     {
-        throw new NotImplementedException();
+        int boostTime = elevatorManager.managerBonusTime;
+
+        if (!elevatorManager.activated &&
+            !elevatorManager.isCoolingDown)
+        {
+            StartCoroutine(ManagerBoost(boostTime, elevatorManager));
+        }
     }
 
     private void HandleOverdaysManagerBought()
@@ -76,7 +84,75 @@ public class OverdaysArea : MonoBehaviour
 
     private void HandleOverdaysManagerActivated()
     {
-        throw new NotImplementedException();
+        int boostTime = overdaysManager.managerBonusTime;
+
+        if (!elevatorManager.activated &&
+            !elevatorManager.isCoolingDown)
+        {
+            StartCoroutine(ManagerBoost(boostTime, overdaysManager));
+        }
+    }
+
+    private IEnumerator ManagerBoost(int boostTime, Manager manager)
+    {
+        manager.activated = true;
+        var bonus = GameCore.Instance.Data.ActiveManagerMultiplier;
+        manager.spriteRenderer.sprite = manager.inactiveSprite;
+
+        var elevatorArea = elevatorManager.workingPlace;
+        var overdaysArea = overdaysManager.workingPlace;
+
+        if (manager.workingPlace == overdaysArea)
+        {
+            foreach (var miner in workers)
+            {
+                miner.capacity = Mathf.RoundToInt(miner.capacity * bonus);
+                miner.walkingSpeed = miner.walkingSpeed * bonus;
+                miner.timeToLoad = miner.timeToLoad / bonus;
+                miner.timeToUnload = miner.timeToUnload / bonus;
+            }
+        }
+        else
+        {
+            elevatorGuy.capacity = Mathf.RoundToInt(elevatorGuy.capacity * bonus);
+            elevatorGuy.walkingSpeed = elevatorGuy.walkingSpeed * bonus;
+            elevatorGuy.timeToLoad = elevatorGuy.timeToLoad / bonus;
+            elevatorGuy.timeToUnload = elevatorGuy.timeToUnload / bonus;
+        }
+
+        yield return new WaitForSeconds(boostTime);
+
+        manager.activated = false;
+
+        if (manager.workingPlace == overdaysArea)
+        {
+            foreach (var miner in workers)
+            {
+                miner.capacity = Mathf.RoundToInt(miner.capacity / bonus);
+                miner.walkingSpeed = miner.walkingSpeed / bonus;
+                miner.timeToLoad = miner.timeToLoad * bonus;
+                miner.timeToUnload = miner.timeToUnload * bonus;
+            }
+        }
+        else
+        {
+            elevatorGuy.capacity = Mathf.RoundToInt(elevatorGuy.capacity / bonus);
+            elevatorGuy.walkingSpeed = elevatorGuy.walkingSpeed / bonus;
+            elevatorGuy.timeToLoad = elevatorGuy.timeToLoad * bonus;
+            elevatorGuy.timeToUnload = elevatorGuy.timeToUnload * bonus;
+        }
+
+        StartCoroutine(StartCoolDownPhase(manager));
+    }
+
+    private IEnumerator StartCoolDownPhase(Manager manager)
+    {
+        manager.isCoolingDown = true;
+
+        yield return new WaitForSecondsRealtime(GameCore.Instance.Data.ManagerCoolDownTime);
+
+        manager.spriteRenderer.sprite = manager.activeSprite;
+        manager.isCoolingDown = false;
     }
 
     private void HandleElevatorUpgraded()

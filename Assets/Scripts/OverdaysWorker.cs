@@ -35,18 +35,6 @@ public class OverdaysWorker : WorkerBase
 
         loadingContainer = loadingPosition;
         manager = transform.parent.GetComponentInChildren<Manager>();
-        manager.OnManagerBought += HandleManagerBought;
-        manager.OnManagerActivated += HandleManagerActivated;
-    }
-
-    private void HandleManagerActivated()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void HandleManagerBought()
-    {
-        hasManager = true;
     }
 
     private void OnMouseDown()
