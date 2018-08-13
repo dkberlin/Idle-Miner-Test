@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class Miner : WorkerBase
 {
-    private MineShaft minerMineShaft;
-
     [SerializeField] private MineContainer shaftContainer;
-
-    private SpriteRenderer spriteRenderer;
-
     public int timesUpdated = 0;
+
+    private MineShaft minerMineShaft;
+    private SpriteRenderer spriteRenderer;
 
     private void Start()
     {

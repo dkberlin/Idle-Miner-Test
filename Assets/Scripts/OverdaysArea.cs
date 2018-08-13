@@ -4,23 +4,14 @@ using UnityEngine;
 
 public class OverdaysArea : MonoBehaviour
 {
-    [SerializeField] private Manager elevatorManager;
-
-    [SerializeField] private UpgradeButton elevatorUpgradeButton;
-
-    [SerializeField] private Manager overdaysManager;
-
-    [SerializeField] private UpgradeButton overdaysUpgradeButton;
-
+    [SerializeField] private ElevatorWorker elevatorContainer;
     [SerializeField] private ElevatorWorker elevatorGuy;
-
-    [SerializeField]
-    private UpgradeButton upgradeButton;
-    [SerializeField]
-    private ContainerBase overdaysContainer;
-
-    [SerializeField]
-    private ElevatorWorker elevatorContainer;
+    [SerializeField] private Manager elevatorManager;
+    [SerializeField] private UpgradeButton elevatorUpgradeButton;
+    [SerializeField] private ContainerBase overdaysContainer;
+    [SerializeField] private Manager overdaysManager;
+    [SerializeField] private UpgradeButton overdaysUpgradeButton;
+    [SerializeField] private UpgradeButton upgradeButton;
 
     public OverdaysWorker workerPrefab;
 
@@ -49,7 +40,6 @@ public class OverdaysArea : MonoBehaviour
 
     private void HandleElevatorManagerBought()
     {
-        //var elevatorGuy = GetComponentInChildren<ElevatorWorker>();
         elevatorGuy.active = true;
         elevatorGuy.hasManager = true;
         elevatorGuy.shouldBeMoving = true;
@@ -57,7 +47,7 @@ public class OverdaysArea : MonoBehaviour
 
     private void HandleElevatorManagerActivated()
     {
-        int boostTime = elevatorManager.managerBonusTime;
+        var boostTime = elevatorManager.managerBonusTime;
 
         if (!elevatorManager.activated &&
             !elevatorManager.isCoolingDown)
@@ -84,7 +74,7 @@ public class OverdaysArea : MonoBehaviour
 
     private void HandleOverdaysManagerActivated()
     {
-        int boostTime = overdaysManager.managerBonusTime;
+        var boostTime = overdaysManager.managerBonusTime;
 
         if (!elevatorManager.activated &&
             !elevatorManager.isCoolingDown)
@@ -163,6 +153,7 @@ public class OverdaysArea : MonoBehaviour
             elevatorGuy.timeToLoad = elevatorGuy.timeToLoad - multiplier / 2;
             elevatorGuy.timeToUnload = elevatorGuy.timeToUnload - multiplier / 2;
         }
+
         elevatorGuy.capacity = Mathf.RoundToInt(elevatorGuy.capacity * multiplier);
         elevatorGuy.timesUpdated++;
         elevatorGuy.SetElevatorWOrkerCapacityText();

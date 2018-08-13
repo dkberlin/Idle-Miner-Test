@@ -4,21 +4,18 @@ using UnityEngine;
 
 public class MineShaft : MonoBehaviour
 {
+    [SerializeField] private Miner minerPrefab;
+    [SerializeField] private int mineshaftFloor;
+
     public MineContainer container;
     public MineContainer elevatorShaft;
     public ContainerBase endOfMine;
+    public Manager shaftManager;
+    public UpgradeButton upgradeButton;
     public bool isFirstMineshaft = true;
-
-    [SerializeField] private Miner minerPrefab;
-
-    [SerializeField] private int mineshaftFloor;
 
     private Miner[] mineShaftWorkers;
     private float multiplier;
-
-    [SerializeField] public Manager shaftManager;
-
-    public UpgradeButton upgradeButton;
 
     private void Start()
     {

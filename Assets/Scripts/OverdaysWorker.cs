@@ -5,16 +5,14 @@ using UnityEngine;
 public class OverdaysWorker : WorkerBase
 {
     [SerializeField] private ContainerBase loadingContainer;
-
     [SerializeField] private Manager manager;
-
-    private SpriteRenderer spriteR;
-
-    public event Action<int> OnMoneyEarned;
 
     public int timesUpdated = 0;
 
     private ContainerBase[] allContainers;
+    private SpriteRenderer spriteR;
+
+    public event Action<int> OnMoneyEarned;
 
     private void Start()
     {

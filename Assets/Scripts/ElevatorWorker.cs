@@ -6,15 +6,14 @@ using UnityEngine;
 public class ElevatorWorker : WorkerBase
 {
     public ContainerBase groundFloorContainer;
-
-    private int index = 1;
     public List<MineContainer> loadingPositions;
-
-    public bool shouldBeMoving;
     private SpriteRenderer spriteR;
 
+    public bool shouldBeMoving;
     public int timesUpdated = 0;
     public int maxSpeedUpgrades = 4;
+
+    private int index = 1;
 
     private void Start()
     {
@@ -24,9 +23,38 @@ public class ElevatorWorker : WorkerBase
         SetElevatorWOrkerCapacityText();
     }
 
+    private void Update()
+    {
+        if (!shouldBeMoving)
+        {
+            return;
+        }
+
+        if (active)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, loadingPositions[index].transform.position,
+                walkingSpeed * Time.deltaTime);
+        }
+
+        if (active && index != 0 &&
+            Vector2.Distance(transform.position, loadingPosition.transform.position) < 0.01f)
+        {
+            OnArrivedAtLoadingPosition();
+        }
+
+        if (active &&
+            Vector2.Distance(transform.position, unloadingPosition.transform.position) < 0.01f)
+        {
+            OnArrivedAtUnloadingPosition();
+        }
+    }
+
     private void OnMouseDown()
     {
-        OnWorkerClicked();
+        if (!active)
+        {
+            OnWorkerClicked();
+        }
     }
 
     public override void OnArrivedAtLoadingPosition()
@@ -56,7 +84,6 @@ public class ElevatorWorker : WorkerBase
         }
 
         StartCoroutine(UnloadCapacity());
-
     }
 
     private IEnumerator LoadCapacity()
@@ -87,7 +114,6 @@ public class ElevatorWorker : WorkerBase
             isFullyLoaded = true;
             SetElevatorWOrkerCapacityText();
         }
-
 
         if (index + 1 < loadingPositions.Count)
         {
@@ -161,31 +187,5 @@ public class ElevatorWorker : WorkerBase
     public void SetElevatorWOrkerCapacityText()
     {
         transform.GetComponentInChildren<TextMesh>().text = currentLoad + "/" + capacity;
-    }
-
-    private void Update()
-    {
-        if (!shouldBeMoving)
-        {
-            return;
-        }
-
-        if (active)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, loadingPositions[index].transform.position,
-                walkingSpeed * Time.deltaTime);
-        }
-
-        if (active && index != 0 &&
-            Vector2.Distance(transform.position, loadingPosition.transform.position) < 0.01f)
-        {
-            OnArrivedAtLoadingPosition();
-        }
-
-        if (active &&
-            Vector2.Distance(transform.position, unloadingPosition.transform.position) < 0.01f)
-        {
-            OnArrivedAtUnloadingPosition();
-        }
     }
 }

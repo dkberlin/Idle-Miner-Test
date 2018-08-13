@@ -3,31 +3,21 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    public bool activated = false;
-
+    public GameObject workingPlace;
+    public SpriteRenderer spriteRenderer;
     public Sprite activeSprite;
-
     public Sprite inactiveSprite;
-
     public Sprite managerAvailable;
-
+    public Sprite managerUnavailable;
+    public bool activated = false;
     public bool managerBought;
     public bool managerCanBeBought;
-
+    public bool isCoolingDown = false;
     public int managerBonusTime;
-
     public int managerCost;
-
-    public Sprite managerUnavailable;
-
-    public SpriteRenderer spriteRenderer;
-
-    public GameObject workingPlace;
 
     public event Action OnManagerBought;
     public event Action OnManagerActivated;
-
-    public bool isCoolingDown = false;
 
     private void Awake()
     {

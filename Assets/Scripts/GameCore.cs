@@ -4,47 +4,34 @@ using UnityEngine.UI;
 
 public class GameCore : MonoSingleton<GameCore>
 {
-    [SerializeField] private float activeManagerMultiplier;
-
+    #region EDITOR
     [SerializeField] private UpgradeButton AddNewMineshaftButton;
 
+    [SerializeField] private MineShaft mineShaftPrefab;
+    [SerializeField] private GameObject overDaysArea;
+    [SerializeField] private float activeManagerMultiplier;
     [SerializeField] private float basicMineShaftManagerCost;
-
     [SerializeField] private float basicMineshaftUpgradeCost;
-
     [SerializeField] private float basicNewMineshaftCost;
-
     [SerializeField] private float boughtUpgradeMultiplier;
-
     [SerializeField] private float elevatorManagerCost;
-
     [SerializeField] private float elevatorUpgradeCost;
+    [SerializeField] private float globalManagerCoolDownTime;
+    [SerializeField] private float newShaftValueMultiplier;
+    [SerializeField] private float overdaysManagerCost;
+    [SerializeField] private float overdaysUpgradeCost;
 
-    [SerializeField]
-    private float newShaftValueMultiplier;
+    [SerializeField] public List<UpgradeButton> upgradeButtons;
 
-    [SerializeField]
-    private float globalManagerCoolDownTime;
+    private OverdaysWorker[] overdaysWorkers;
 
     public ElevatorWorker elevatorWorker;
     public float gapBetweenMineShafts;
     public List<Manager> managers;
     public List<MineShaft> mineShaftList;
-
-    [SerializeField] private MineShaft mineShaftPrefab;
-
     public Text moneyInfo;
-
-    [SerializeField] private GameObject overDaysArea;
-
-    [SerializeField] private float overdaysManagerCost;
-
-    [SerializeField] private float overdaysUpgradeCost;
-
-    private OverdaysWorker[] overdaysWorkers;
     public GameObject parentObject;
-
-    [SerializeField] public List<UpgradeButton> upgradeButtons;
+    #endregion
 
     public DataContainer Data { get; set; }
 
@@ -68,8 +55,8 @@ public class GameCore : MonoSingleton<GameCore>
 
         mineShaftList.Add(newShaft);
 
-        int lastShaftUpgradeCost = mineShaftList[mineShaftList.Count - 2].upgradeButton.upgradeCost;
-        float newShaftMultiplier = GameCore.Instance.Data.NewShaftValueMultiplier;
+        var lastShaftUpgradeCost = mineShaftList[mineShaftList.Count - 2].upgradeButton.upgradeCost;
+        var newShaftMultiplier = Instance.Data.NewShaftValueMultiplier;
 
         elevatorWorker.loadingPositions.Add(newShaft.elevatorShaft);
         upgradeButtons.Add(newShaft.upgradeButton);

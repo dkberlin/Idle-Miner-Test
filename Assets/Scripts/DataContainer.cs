@@ -17,7 +17,6 @@ public class DataContainer
     public float ManagerCoolDownTime { get; set; }
     public float NewShaftValueMultiplier { get; set; }
 
-
     public int GetNewUpgradeCost(int oldCost, int upgradeLevel = 1)
     {
         return Mathf.RoundToInt(oldCost * BoughtUpgradeMultiplier * upgradeLevel);
@@ -26,10 +25,5 @@ public class DataContainer
     public int GetManagerCost(int mineShaftFloor)
     {
         return Mathf.RoundToInt(BasicMineShaftManagerCost * (mineShaftFloor * 0.7f));
-    }
-
-    public int GetNewMineshaftCost(int mineShaftFloor)
-    {
-        return Mathf.RoundToInt(BasicNewMineshaftCost * (mineShaftFloor));
     }
 }

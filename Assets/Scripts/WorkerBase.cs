@@ -2,28 +2,20 @@
 
 public abstract class WorkerBase : MonoBehaviour
 {
-    public bool active;
-
+    [SerializeField] protected Sprite workerIcon;
     [SerializeField] protected Sprite busyIcon;
-
-    public int capacity;
-
-    protected int currentLoad;
-
-    public bool hasManager = false;
-    protected bool isFullyLoaded = false;
-
     [SerializeField] protected ContainerBase loadingPosition;
-
-    public float timeToLoad;
-
-    public float timeToUnload;
-
     [SerializeField] protected ContainerBase unloadingPosition;
 
+    public bool active;
+    public bool hasManager = false;
+    public int capacity;
+    public float timeToLoad;
+    public float timeToUnload;
     public float walkingSpeed;
 
-    [SerializeField] protected Sprite workerIcon;
+    protected int currentLoad;
+    protected bool isFullyLoaded = false;
 
     public abstract void OnWorkerClicked();
     public abstract void OnArrivedAtLoadingPosition();
