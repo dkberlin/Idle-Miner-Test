@@ -14,9 +14,9 @@ public class DataContainer
     public float ActiveManagerMultiplier { get; set; }
     public float BasicMineshaftUpgradeCost { get; set; }
     public float BasicNewMineshaftCost { get; set; }
+    public float ManagerCoolDownTime { get; set; }
+    public float NewShaftValueMultiplier { get; set; }
 
-
-   
 
     public int GetNewUpgradeCost(int oldCost, int upgradeLevel = 1)
     {

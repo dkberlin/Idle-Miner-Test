@@ -5,16 +5,16 @@ public class Manager : MonoBehaviour
 {
     public bool activated = false;
 
-    [SerializeField] private Sprite activeSprite;
+    public Sprite activeSprite;
 
-    [SerializeField] private Sprite inactiveSprite;
+    public Sprite inactiveSprite;
 
     public Sprite managerAvailable;
 
     public bool managerBought;
     public bool managerCanBeBought;
 
-    public int managerCooldown;
+    public int managerBonusTime;
 
     public int managerCost;
 
@@ -24,12 +24,12 @@ public class Manager : MonoBehaviour
 
     [SerializeField] private GameObject workingPlace;
 
-    public float ManagerBonus { get; set; }
-
     public event Action OnManagerBought;
     public event Action OnManagerActivated;
 
-    private void Start()
+    public bool isCoolingDown = false;
+
+    private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -46,7 +46,7 @@ public class Manager : MonoBehaviour
             GameCore.Instance.Data.EarnedMoney -= managerCost;
             managerBought = true;
             OnManagerBought();
-            spriteRenderer.sprite = inactiveSprite;
+            spriteRenderer.sprite = activeSprite;
             GameCore.Instance.CheckIfManagerAvailable();
         }
     }

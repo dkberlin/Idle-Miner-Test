@@ -20,6 +20,12 @@ public class GameCore : MonoSingleton<GameCore>
 
     [SerializeField] private float elevatorUpgradeCost;
 
+    [SerializeField]
+    private float newShaftValueMultiplier;
+
+    [SerializeField]
+    private float globalManagerCoolDownTime;
+
     public ElevatorWorker elevatorWorker;
     public float gapBetweenMineShafts;
     public List<Manager> managers;
@@ -61,13 +67,21 @@ public class GameCore : MonoSingleton<GameCore>
         var newShaft = Instantiate(mineShaftPrefab, newPosition, transform.rotation, parentObject.transform);
 
         mineShaftList.Add(newShaft);
+
+        int lastShaftUpgradeCost = mineShaftList[mineShaftList.Count - 2].upgradeButton.upgradeCost;
+        float newShaftMultiplier = GameCore.Instance.Data.NewShaftValueMultiplier;
+
         elevatorWorker.loadingPositions.Add(newShaft.elevatorShaft);
         upgradeButtons.Add(newShaft.upgradeButton);
         managers.Add(newShaft.shaftManager);
+
         newShaft.shaftManager.OnManagerBought += HandleUpgradeBought;
         newShaft.isFirstMineshaft = false;
-        int lastShaftUpgradeCost = mineShaftList[mineShaftList.Count - 2].upgradeButton.upgradeCost;
         newShaft.upgradeButton.upgradeCost = Data.GetNewUpgradeCost(lastShaftUpgradeCost, mineShaftList.Count);
+        newShaft.elevatorShaft.maxCapacity = Mathf.RoundToInt(newShaft.elevatorShaft.maxCapacity * newShaftMultiplier);
+
+        CheckIfManagerAvailable();
+        CheckIfUpgradeAvailable();
     }
 
     private void SetPricesAndMultipliers()
@@ -77,6 +91,7 @@ public class GameCore : MonoSingleton<GameCore>
 
         Data.ElevatorManagerCost = elevatorManagerCost;
         Data.ElevatorUpgradeCost = elevatorUpgradeCost;
+        Data.ManagerCoolDownTime = globalManagerCoolDownTime;
 
         Data.BasicMineShaftManagerCost = basicMineShaftManagerCost;
         Data.BasicMineshaftUpgradeCost = basicMineshaftUpgradeCost;
@@ -85,6 +100,7 @@ public class GameCore : MonoSingleton<GameCore>
         Data.OverdaysUpgradeCost = overdaysUpgradeCost;
 
         Data.BasicNewMineshaftCost = basicNewMineshaftCost;
+        Data.NewShaftValueMultiplier = newShaftValueMultiplier;
     }
 
     private void RegisterUpgradeButtons()
@@ -153,6 +169,11 @@ public class GameCore : MonoSingleton<GameCore>
     {
         foreach (var manager in managers)
         {
+            if (manager.managerBought)
+            {
+                continue;
+            }
+
             if (manager.managerCost <= Data.EarnedMoney)
             {
                 manager.managerCanBeBought = true;

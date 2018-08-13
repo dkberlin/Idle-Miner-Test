@@ -48,7 +48,7 @@ public class OverdaysArea : MonoBehaviour
 
     private void HandleElevatorManagerBought()
     {
-        var elevatorGuy = GetComponentInChildren<ElevatorWorker>();
+        //var elevatorGuy = GetComponentInChildren<ElevatorWorker>();
         elevatorGuy.active = true;
         elevatorGuy.hasManager = true;
     }
@@ -84,10 +84,10 @@ public class OverdaysArea : MonoBehaviour
         if (elevatorGuy.timesUpdated < elevatorGuy.maxSpeedUpgrades)
         {
             elevatorGuy.walkingSpeed = elevatorGuy.walkingSpeed * multiplier;
+            elevatorGuy.timeToLoad = elevatorGuy.timeToLoad - multiplier / 2;
+            elevatorGuy.timeToUnload = elevatorGuy.timeToUnload - multiplier / 2;
         }
         elevatorGuy.capacity = Mathf.RoundToInt(elevatorGuy.capacity * multiplier);
-        elevatorGuy.timeToLoad = elevatorGuy.timeToLoad - multiplier / 2;
-        elevatorGuy.timeToUnload = elevatorGuy.timeToUnload - multiplier / 2;
         elevatorGuy.timesUpdated++;
         elevatorGuy.SetElevatorWOrkerCapacityText();
         elevatorUpgradeButton.upgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(elevatorUpgradeButton.upgradeCost);

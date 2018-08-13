@@ -17,7 +17,7 @@ public class UpgradeButton : MonoBehaviour
 
     public event Action OnUpgraded;
 
-    private void Start()
+    private void Awake()
     {
         spriteR = GetComponent<SpriteRenderer>();
     }

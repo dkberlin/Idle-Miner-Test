@@ -37,6 +37,7 @@ public class ElevatorWorker : WorkerBase
     {
         hasManager = true;
         active = true;
+        shouldBeMoving = true;
     }
 
     private void OnMouseDown()
@@ -52,7 +53,11 @@ public class ElevatorWorker : WorkerBase
 
     public override void OnArrivedAtUnloadingPosition()
     {
-        shouldBeMoving = false;
+        if (!hasManager)
+        {
+            shouldBeMoving = false;
+        }
+
         if (currentLoad == 0)
         {
             index = 1;
@@ -68,7 +73,6 @@ public class ElevatorWorker : WorkerBase
 
         StartCoroutine(UnloadCapacity());
 
-        loadingPosition = loadingPositions[index];
     }
 
     private IEnumerator LoadCapacity()
@@ -151,6 +155,7 @@ public class ElevatorWorker : WorkerBase
 
         spriteR.sprite = workerIcon;
         index = 1;
+        loadingPosition = loadingPositions[index];
         StopAllCoroutines();
     }
 
@@ -193,7 +198,7 @@ public class ElevatorWorker : WorkerBase
             OnArrivedAtLoadingPosition();
         }
 
-        if (currentLoad > 0 && active &&
+        if (active &&
             Vector2.Distance(transform.position, unloadingPosition.transform.position) < 0.01f)
         {
             OnArrivedAtUnloadingPosition();

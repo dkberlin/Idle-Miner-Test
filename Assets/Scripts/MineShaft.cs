@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class MineShaft : MonoBehaviour
@@ -34,11 +35,57 @@ public class MineShaft : MonoBehaviour
         multiplier = GameCore.Instance.Data.BoughtUpgradeMultiplier;
         mineshaftFloor = GameCore.Instance.mineShaftList.Count;
         shaftManager.managerCost = GameCore.Instance.Data.GetManagerCost(mineshaftFloor);
+        shaftManager.managerBonusTime = ((mineshaftFloor * 6) / 2) + 7;
     }
 
     private void HandleManagerActivated()
     {
-        throw new NotImplementedException();
+        int boostTime = shaftManager.managerBonusTime;
+
+        if (!shaftManager.activated &&
+            !shaftManager.isCoolingDown)
+        {
+            StartCoroutine(ManagerBoost(boostTime));
+        }
+    }
+
+    private IEnumerator ManagerBoost(int boostTime)
+    {
+        shaftManager.activated = true;
+        var bonus = GameCore.Instance.Data.ActiveManagerMultiplier;
+        shaftManager.spriteRenderer.sprite = shaftManager.inactiveSprite;
+
+        foreach (var miner in mineShaftWorkers)
+        {
+            miner.capacity = Mathf.RoundToInt(miner.capacity * bonus);
+            miner.walkingSpeed = miner.walkingSpeed * bonus;
+            miner.timeToLoad = miner.timeToLoad / bonus;
+            miner.timeToUnload = miner.timeToUnload / bonus;
+        }
+
+        yield return new WaitForSeconds(boostTime);
+
+        shaftManager.activated = false;
+
+        foreach (var miner in mineShaftWorkers)
+        {
+            miner.capacity = Mathf.RoundToInt(miner.capacity / bonus);
+            miner.walkingSpeed = miner.walkingSpeed / bonus;
+            miner.timeToLoad = miner.timeToLoad * bonus;
+            miner.timeToUnload = miner.timeToUnload * bonus;
+        }
+
+        StartCoroutine(StartCoolDownPhase());
+    }
+
+    private IEnumerator StartCoolDownPhase()
+    {
+        shaftManager.isCoolingDown = true;
+
+        yield return new WaitForSecondsRealtime(GameCore.Instance.Data.ManagerCoolDownTime);
+
+        shaftManager.spriteRenderer.sprite = shaftManager.activeSprite;
+        shaftManager.isCoolingDown = false;
     }
 
     private void HandleManagerBought()
