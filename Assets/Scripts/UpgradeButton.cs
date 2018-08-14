@@ -4,10 +4,10 @@ using UnityEngine;
 public class UpgradeButton : MonoBehaviour
 {
     [SerializeField] private GameObject workingArea;
+    [SerializeField] private Sprite upgradeUnavailable;
+    [SerializeField] private Sprite upgradeAvailable;
+    [SerializeField] private SpriteRenderer spriteR;
 
-    public SpriteRenderer spriteR { get; private set; }
-    public Sprite upgradeAvailable { get; private set; }
-    public Sprite upgradeUnavailable { get; private set; }
     public bool upgradeCanBeBought;
     public int upgradeCost { get; private set; }
 
@@ -16,6 +16,11 @@ public class UpgradeButton : MonoBehaviour
     private void Awake()
     {
         spriteR = GetComponent<SpriteRenderer>();
+    }
+
+    public void SetUpgradeAvailable(bool available)
+    {
+        spriteR.sprite = available ? upgradeAvailable : upgradeUnavailable;
     }
 
     public void OnMouseDown()

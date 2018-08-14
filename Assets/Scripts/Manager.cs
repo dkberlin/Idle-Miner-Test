@@ -6,9 +6,9 @@ public class Manager : MonoBehaviour
     [SerializeField] private Sprite managerAvailable;
     [SerializeField] private Sprite managerUnavailable;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    public Sprite activeSprite { get; private set; }
-    public Sprite inactiveSprite { get; private set; }
-    public GameObject workingPlace { get; private set; }
+    [SerializeField] private Sprite activeSprite;
+    [SerializeField] private Sprite inactiveSprite;
+    [SerializeField] private GameObject workingPlace;
     public int managerCost { get; private set; }
     public int managerBonusTime { get; private set; }
     public bool activated = false;
@@ -41,24 +41,19 @@ public class Manager : MonoBehaviour
         }
     }
 
-    public void SwitchSpriteToAvailable()
+    public GameObject GetWorkingPlace()
     {
-        spriteRenderer.sprite = managerAvailable;
+        return workingPlace;
     }
 
-    public void SwitchSpriteToUnavailable()
+    public void SetManagerSpriteAvailable(bool available)
     {
-        spriteRenderer.sprite = managerUnavailable;
+        spriteRenderer.sprite = available ? managerAvailable : managerUnavailable;
     }
 
-    public void SwitchToActiveSprite()
+    public void SetManagerSpriteActive(bool active)
     {
-        spriteRenderer.sprite = activeSprite;
-    }
-
-    public void SwitchToInactiveSprite()
-    {
-        spriteRenderer.sprite = inactiveSprite;
+        spriteRenderer.sprite = active ? activeSprite : inactiveSprite;
     }
 
     public void SetManagerCost(int cost)

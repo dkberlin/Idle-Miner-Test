@@ -296,17 +296,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec961c26d5daad74e800d2e6ced097ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activated: 0
+  managerAvailable: {fileID: 21300000, guid: d01eb08899ce70e4bacaeeb255e8fa49, type: 3}
+  managerUnavailable: {fileID: 21300000, guid: 4f4daf881c6b8a14c9b92fa2f1315d24, type: 3}
+  spriteRenderer: {fileID: 212979311484331222}
   activeSprite: {fileID: 21300000, guid: 4d0ccab6d84f0444f849b4a3b989b286, type: 3}
   inactiveSprite: {fileID: 21300000, guid: 71406dd5cfaba964ea43098a5afc62ea, type: 3}
-  managerAvailable: {fileID: 21300000, guid: d01eb08899ce70e4bacaeeb255e8fa49, type: 3}
+  workingPlace: {fileID: 0}
+  activated: 0
   managerBought: 0
   managerCanBeBought: 0
-  managerBonusTime: 0
-  managerCost: 0
-  managerUnavailable: {fileID: 21300000, guid: 4f4daf881c6b8a14c9b92fa2f1315d24, type: 3}
-  spriteRenderer: {fileID: 0}
-  workingPlace: {fileID: 1550314171861278}
   isCoolingDown: 0
 --- !u!114 &114117865255096392
 MonoBehaviour:
@@ -319,12 +317,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2c2f4a27d304140a88962e29478609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteR: {fileID: 0}
-  upgradeAvailable: {fileID: 21300000, guid: 6e39631b9e3be8242b2d2ba66198b52d, type: 3}
-  upgradeCanBeBought: 0
-  upgradeCost: 0
-  upgradeUnavailable: {fileID: 21300000, guid: 5e1d06ac7c8221d449d5b9fd6dabea33, type: 3}
   workingArea: {fileID: 1550314171861278}
+  upgradeUnavailable: {fileID: 21300000, guid: 5e1d06ac7c8221d449d5b9fd6dabea33, type: 3}
+  upgradeAvailable: {fileID: 21300000, guid: 6e39631b9e3be8242b2d2ba66198b52d, type: 3}
+  spriteR: {fileID: 212374511769999678}
+  upgradeCanBeBought: 0
 --- !u!114 &114202902274830286
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -336,7 +333,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dbb775525a65014c90ca0fea393ea36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCapacity: 0
   maxCapacity: 0
   isFullyLoaded: 0
 --- !u!114 &114266670927997796
@@ -350,15 +346,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3353d43db3d904c479a9e56f007ee04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minerPrefab: {fileID: 114253377777684360, guid: f5473c7f3f6b97d4a8d0b3f04ff7a388,
+    type: 2}
   container: {fileID: 114270368616393878}
   elevatorShaft: {fileID: 114511210140618340}
   endOfMine: {fileID: 114202902274830286}
-  isFirstMineshaft: 1
-  minerPrefab: {fileID: 114253377777684360, guid: f5473c7f3f6b97d4a8d0b3f04ff7a388,
-    type: 2}
-  mineshaftFloor: 0
   shaftManager: {fileID: 114006696775290982}
   upgradeButton: {fileID: 114117865255096392}
+  mineshaftFloor: 0
+  isFirstMineshaft: 1
 --- !u!114 &114270368616393878
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -370,7 +366,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dbb775525a65014c90ca0fea393ea36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCapacity: 0
   maxCapacity: 0
   isFullyLoaded: 0
 --- !u!114 &114511210140618340
@@ -384,8 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dbb775525a65014c90ca0fea393ea36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCapacity: 0
-  maxCapacity: 30
+  maxCapacity: 15
   isFullyLoaded: 0
 --- !u!114 &114930568592357228
 MonoBehaviour:
@@ -398,18 +392,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c79f3e7d7f7b664ea0877c42abcb43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
+  workerIcon: {fileID: 21300000, guid: 6e2b81ee4965e2f49aa71e76cbca5d29, type: 3}
   busyIcon: {fileID: 21300000, guid: 35da92ee906d75d4d95b14ea9d0a0592, type: 3}
-  capacity: 0
-  hasManager: 0
   loadingPosition: {fileID: 114202902274830286}
+  unloadingPosition: {fileID: 114270368616393878}
+  active: 0
+  hasManager: 0
+  capacity: 5
   timeToLoad: 3
   timeToUnload: 3
-  unloadingPosition: {fileID: 114270368616393878}
   walkingSpeed: 1
-  workerIcon: {fileID: 21300000, guid: 6e2b81ee4965e2f49aa71e76cbca5d29, type: 3}
   shaftContainer: {fileID: 114511210140618340}
-  timesUpdated: 0
 --- !u!212 &212134828103639206
 SpriteRenderer:
   m_ObjectHideFlags: 1

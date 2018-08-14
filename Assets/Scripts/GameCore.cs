@@ -8,6 +8,7 @@ public class GameCore : MonoSingleton<GameCore>
     [SerializeField] private UpgradeButton AddNewMineshaftButton;
     [SerializeField] private List<UpgradeButton> upgradeButtons;
     [SerializeField] private List<Manager> managers;
+    [SerializeField] private List<MineShaft> mineShaftList;
     [SerializeField] private MineShaft mineShaftPrefab;
     [SerializeField] private GameView gameView;
     [SerializeField] private ElevatorWorker elevatorWorker;
@@ -28,7 +29,6 @@ public class GameCore : MonoSingleton<GameCore>
     #endregion
 
     private OverdaysWorker[] overdaysWorkers;
-    private List<MineShaft> mineShaftList;
 
     public DataContainer Data { get; set; }
 
@@ -65,7 +65,7 @@ public class GameCore : MonoSingleton<GameCore>
         newShaftManager.OnManagerBought += HandleUpgradeBought;
         newShaft.isFirstMineshaft = false;
         newUpgradeButton.SetNewUpgradeCost(Data.GetNewUpgradeCost(lastShaftUpgradeCost, mineShaftList.Count));
-        newShaftElevatorShaft.SetNewMaxCapacity(Mathf.RoundToInt(newShaftElevatorShaft.maxCapacity * newShaftMultiplier));
+        newShaftElevatorShaft.SetNewMaxCapacity(Mathf.RoundToInt(newShaftElevatorShaft.GetMaxCapacity() * newShaftMultiplier));
 
         CheckIfManagerAvailable();
         CheckIfUpgradeAvailable();
@@ -147,12 +147,12 @@ public class GameCore : MonoSingleton<GameCore>
             if (upgradeButton.upgradeCost <= Data.EarnedMoney)
             {
                 upgradeButton.upgradeCanBeBought = true;
-                upgradeButton.spriteR.sprite = upgradeButton.upgradeAvailable;
+                upgradeButton.SetUpgradeAvailable(true);
             }
             else
             {
                 upgradeButton.upgradeCanBeBought = false;
-                upgradeButton.spriteR.sprite = upgradeButton.upgradeUnavailable;
+                upgradeButton.SetUpgradeAvailable(false);
             }
         }
     }
@@ -169,12 +169,12 @@ public class GameCore : MonoSingleton<GameCore>
             if (manager.managerCost <= Data.EarnedMoney)
             {
                 manager.managerCanBeBought = true;
-                manager.SwitchSpriteToAvailable();
+                manager.SetManagerSpriteAvailable(true);
             }
             else
             {
                 manager.managerCanBeBought = false;
-                manager.SwitchSpriteToUnavailable();
+                manager.SetManagerSpriteAvailable(false);
             }
         }
     }

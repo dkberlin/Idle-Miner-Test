@@ -32,7 +32,9 @@ public class OverdaysArea : MonoBehaviour
         workers = GetComponentsInChildren<OverdaysWorker>();
 
         elevatorManager.SetManagerCost(Mathf.RoundToInt(GameCore.Instance.Data.ElevatorManagerCost));
+        elevatorManager.SetManagerBonusTime(40);
         overdaysManager.SetManagerCost(Mathf.RoundToInt(GameCore.Instance.Data.OverdaysManagerCost));
+        overdaysManager.SetManagerBonusTime(22);
 
         multiplier = GameCore.Instance.Data.BoughtUpgradeMultiplier;
     }
@@ -75,8 +77,8 @@ public class OverdaysArea : MonoBehaviour
     {
         var boostTime = overdaysManager.managerBonusTime;
 
-        if (!elevatorManager.activated &&
-            !elevatorManager.isCoolingDown)
+        if (!overdaysManager.activated &&
+            !overdaysManager.isCoolingDown)
         {
             StartCoroutine(ManagerBoost(boostTime, overdaysManager));
         }
@@ -86,49 +88,48 @@ public class OverdaysArea : MonoBehaviour
     {
         manager.activated = true;
         var bonus = GameCore.Instance.Data.ActiveManagerMultiplier;
-        manager.SwitchToInactiveSprite();
+        manager.SetManagerSpriteActive(false);
 
-        var elevatorArea = elevatorManager.workingPlace;
-        var overdaysArea = overdaysManager.workingPlace;
+        var overdaysArea = overdaysManager.GetWorkingPlace();
 
-        if (manager.workingPlace == overdaysArea)
+        if (manager.GetWorkingPlace() == overdaysArea)
         {
             foreach (var miner in workers)
             {
-                miner.SetCap(Mathf.RoundToInt(miner.Capacity * bonus));
-                miner.SetWalkingSpeed(miner.WalkingSpeed * bonus);
-                miner.SetTimeToLoad(miner.TimeToLoad / bonus);
-                miner.SetTimeToUnload(miner.TimeToUnload / bonus);
+                miner.SetCap(Mathf.RoundToInt(miner.GetCapacity() * bonus));
+                miner.SetWalkingSpeed(miner.GetWalkingSpeed() * bonus);
+                miner.SetTimeToLoad(miner.GetTimeToLoad() / bonus);
+                miner.SetTimeToUnload(miner.GetTimeToUnload() / bonus);
             }
         }
         else
         {
-            elevatorGuy.SetCap(Mathf.RoundToInt(elevatorGuy.Capacity * bonus));
-            elevatorGuy.SetWalkingSpeed(elevatorGuy.WalkingSpeed * bonus);
-            elevatorGuy.SetTimeToLoad(elevatorGuy.TimeToLoad / bonus);
-            elevatorGuy.SetTimeToUnload(elevatorGuy.TimeToUnload / bonus);
+            elevatorGuy.SetCap(Mathf.RoundToInt(elevatorGuy.GetCapacity() * bonus));
+            elevatorGuy.SetWalkingSpeed(elevatorGuy.GetWalkingSpeed() * bonus);
+            elevatorGuy.SetTimeToLoad(elevatorGuy.GetTimeToLoad() / bonus);
+            elevatorGuy.SetTimeToUnload(elevatorGuy.GetTimeToUnload() / bonus);
         }
 
         yield return new WaitForSeconds(boostTime);
 
         manager.activated = false;
 
-        if (manager.workingPlace == overdaysArea)
+        if (manager.GetWorkingPlace() == overdaysArea)
         {
             foreach (var miner in workers)
             {
-                miner.SetCap(Mathf.RoundToInt(miner.Capacity / bonus));
-                miner.SetWalkingSpeed(miner.WalkingSpeed / bonus);
-                miner.SetTimeToLoad(miner.TimeToLoad * bonus);
-                miner.SetTimeToUnload(miner.TimeToUnload * bonus);
+                miner.SetCap(Mathf.RoundToInt(miner.GetCapacity() / bonus));
+                miner.SetWalkingSpeed(miner.GetWalkingSpeed() / bonus);
+                miner.SetTimeToLoad(miner.GetTimeToLoad() * bonus);
+                miner.SetTimeToUnload(miner.GetTimeToUnload() * bonus);
             }
         }
         else
         {
-            elevatorGuy.SetCap(Mathf.RoundToInt(elevatorGuy.Capacity / bonus));
-            elevatorGuy.SetWalkingSpeed(elevatorGuy.WalkingSpeed / bonus);
-            elevatorGuy.SetTimeToLoad(elevatorGuy.TimeToLoad * bonus);
-            elevatorGuy.SetTimeToUnload(elevatorGuy.TimeToUnload * bonus);
+            elevatorGuy.SetCap(Mathf.RoundToInt(elevatorGuy.GetCapacity() / bonus));
+            elevatorGuy.SetWalkingSpeed(elevatorGuy.GetWalkingSpeed() / bonus);
+            elevatorGuy.SetTimeToLoad(elevatorGuy.GetTimeToLoad() * bonus);
+            elevatorGuy.SetTimeToUnload(elevatorGuy.GetTimeToUnload() * bonus);
         }
 
         StartCoroutine(StartCoolDownPhase(manager));
@@ -140,7 +141,7 @@ public class OverdaysArea : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(GameCore.Instance.Data.ManagerCoolDownTime);
 
-        manager.SwitchToActiveSprite();
+        manager.SetManagerSpriteActive(true);
         manager.isCoolingDown = false;
     }
 
@@ -148,12 +149,12 @@ public class OverdaysArea : MonoBehaviour
     {
         if (elevatorGuy.timesUpdated < elevatorGuy.maxSpeedUpgrades)
         {
-            elevatorGuy.SetWalkingSpeed(elevatorGuy.WalkingSpeed * multiplier);
-            elevatorGuy.SetTimeToLoad(elevatorGuy.TimeToLoad - multiplier / 2);
-            elevatorGuy.SetTimeToUnload(elevatorGuy.TimeToUnload - multiplier / 2);
+            elevatorGuy.SetWalkingSpeed(elevatorGuy.GetWalkingSpeed() * multiplier);
+            elevatorGuy.SetTimeToLoad(elevatorGuy.GetTimeToLoad() - multiplier / 2);
+            elevatorGuy.SetTimeToUnload(elevatorGuy.GetTimeToUnload() - multiplier / 2);
         }
 
-        elevatorGuy.SetCap(Mathf.RoundToInt(elevatorGuy.Capacity * multiplier));
+        elevatorGuy.SetCap(Mathf.RoundToInt(elevatorGuy.GetCapacity() * multiplier));
         elevatorGuy.UpgradeAdded();
         elevatorGuy.SetElevatorWOrkerCapacityText();
         elevatorUpgradeButton.SetNewUpgradeCost(GameCore.Instance.Data.GetNewUpgradeCost(elevatorUpgradeButton.upgradeCost));
@@ -177,10 +178,10 @@ public class OverdaysArea : MonoBehaviour
                 continue;
             }
 
-            miner.SetWalkingSpeed(miner.WalkingSpeed * multiplier);
-            miner.SetCap(Mathf.RoundToInt(miner.Capacity * multiplier));
-            miner.SetTimeToLoad(miner.TimeToLoad - multiplier / 2);
-            miner.SetTimeToUnload(miner.TimeToUnload - multiplier / 2);
+            miner.SetWalkingSpeed(miner.GetWalkingSpeed() * multiplier);
+            miner.SetCap(Mathf.RoundToInt(miner.GetCapacity() * multiplier));
+            miner.SetTimeToLoad(miner.GetTimeToLoad() - multiplier / 2);
+            miner.SetTimeToUnload(miner.GetTimeToUnload() - multiplier / 2);
             miner.AddUpdateAmount();
             allMinersMaxed = false;
         }
@@ -190,7 +191,7 @@ public class OverdaysArea : MonoBehaviour
             AddNewMiner();
         }
 
-        overdaysContainer.SetNewMaxCapacity(Mathf.RoundToInt(overdaysContainer.maxCapacity * 1.7f));
+        overdaysContainer.SetNewMaxCapacity(Mathf.RoundToInt(overdaysContainer.GetMaxCapacity() * 1.7f));
         overdaysContainer.SetContainerCapacityText();
 
         var newUpgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(upgradeButton.upgradeCost);

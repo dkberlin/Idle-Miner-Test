@@ -66,17 +66,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c79f3e7d7f7b664ea0877c42abcb43b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkingSpeed: 1
-  capacity: 5
-  loadingPosition: {fileID: 0}
-  unloadingPosition: {fileID: 0}
-  timeToLoad: 3
-  timeToUnload: 3
   workerIcon: {fileID: 21300000, guid: 6e2b81ee4965e2f49aa71e76cbca5d29, type: 3}
   busyIcon: {fileID: 21300000, guid: 35da92ee906d75d4d95b14ea9d0a0592, type: 3}
+  loadingPosition: {fileID: 0}
+  unloadingPosition: {fileID: 0}
   active: 0
+  hasManager: 0
+  capacity: 5
+  timeToLoad: 3
+  timeToUnload: 3
+  walkingSpeed: 1
   shaftContainer: {fileID: 0}
-  timesUpdated: 0
 --- !u!212 &212714299974927618
 SpriteRenderer:
   m_ObjectHideFlags: 1

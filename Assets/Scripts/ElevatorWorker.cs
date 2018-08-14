@@ -24,7 +24,7 @@ public class ElevatorWorker : WorkerBase
         groundFloorContainer.SetContainerCapacityText();
         SetElevatorWOrkerCapacityText();
         timesUpdated = 0;
-        maxSpeedUpgrades = 4;
+        maxSpeedUpgrades = 3;
     }
 
     private void Update()
@@ -37,7 +37,7 @@ public class ElevatorWorker : WorkerBase
         if (active)
         {
             transform.position = Vector2.MoveTowards(transform.position, loadingPositions[index].transform.position,
-                WalkingSpeed * Time.deltaTime);
+                walkingSpeed * Time.deltaTime);
         }
 
         if (active && index != 0 &&
@@ -92,9 +92,9 @@ public class ElevatorWorker : WorkerBase
 
     private IEnumerator LoadCapacity()
     {
-        yield return new WaitForSeconds(TimeToLoad);
+        yield return new WaitForSeconds(timeToLoad);
 
-        var spaceLeftInElevator = Capacity - currentLoad;
+        var spaceLeftInElevator = capacity - currentLoad;
 
         if (spaceLeftInElevator == 0)
         {
@@ -115,7 +115,7 @@ public class ElevatorWorker : WorkerBase
             int loadingPosCap = loadingPositions[index].CurrentCapacity;
             loadingPositions[index].SetNewContainerCapacity(loadingPosCap - spaceLeftInElevator);
             loadingPositions[index].SetContainerCapacityText();
-            currentLoad = Capacity;
+            currentLoad = capacity;
             isFullyLoaded = true;
             SetElevatorWOrkerCapacityText();
         }
@@ -137,13 +137,13 @@ public class ElevatorWorker : WorkerBase
 
     private IEnumerator UnloadCapacity()
     {
-        yield return new WaitForSeconds(TimeToUnload);
-        var spaceLeftInGroundFloorContainer = groundFloorContainer.maxCapacity - groundFloorContainer.CurrentCapacity;
+        yield return new WaitForSeconds(timeToUnload);
+        var spaceLeftInGroundFloorContainer = groundFloorContainer.GetMaxCapacity() - groundFloorContainer.CurrentCapacity;
 
         if (currentLoad <= spaceLeftInGroundFloorContainer)
         {
-            int loadingPosCap = loadingPositions[index].CurrentCapacity;
-            groundFloorContainer.SetNewContainerCapacity(loadingPosCap += currentLoad);
+            int groundFloorCap = groundFloorContainer.CurrentCapacity;
+            groundFloorContainer.SetNewContainerCapacity(groundFloorCap + currentLoad);
             currentLoad = 0;
             groundFloorContainer.SetContainerCapacityText();
             SetElevatorWOrkerCapacityText();
@@ -153,7 +153,7 @@ public class ElevatorWorker : WorkerBase
         if (currentLoad > spaceLeftInGroundFloorContainer)
         {
             currentLoad -= spaceLeftInGroundFloorContainer;
-            groundFloorContainer.SetNewContainerCapacity(groundFloorContainer.maxCapacity);
+            groundFloorContainer.SetNewContainerCapacity(groundFloorContainer.GetMaxCapacity());
             groundFloorContainer.SetContainerCapacityText();
             SetElevatorWOrkerCapacityText();
             isFullyLoaded = false;
@@ -192,7 +192,7 @@ public class ElevatorWorker : WorkerBase
 
     public void SetElevatorWOrkerCapacityText()
     {
-        transform.GetComponentInChildren<TextMesh>().text = currentLoad + "/" + Capacity;
+        transform.GetComponentInChildren<TextMesh>().text = currentLoad + "/" + capacity;
     }
 
     public void AddNewLoadingPositions(MineContainer newShaftElevatorShaft)

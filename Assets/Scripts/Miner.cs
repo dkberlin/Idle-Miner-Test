@@ -17,7 +17,7 @@ public class Miner : WorkerBase
         loadingPosition = minerMineShaft.GetEndOfMine();
         unloadingPosition = minerMineShaft.GetMineshaftContainer();
         shaftContainer = minerMineShaft.GetElevatorShaftContainer();
-        Capacity = Mathf.RoundToInt(GameCore.Instance.GetAmountOfMineshafts() * GameCore.Instance.Data.NewShaftValueMultiplier) + 5;
+        capacity = Mathf.RoundToInt(GameCore.Instance.GetAmountOfMineshafts() * GameCore.Instance.Data.NewShaftValueMultiplier) + 5;
     }
 
     private void OnMouseDown()
@@ -44,8 +44,8 @@ public class Miner : WorkerBase
 
     private IEnumerator LoadCapacity()
     {
-        yield return new WaitForSeconds(TimeToLoad);
-        currentLoad = Capacity;
+        yield return new WaitForSeconds(timeToLoad);
+        currentLoad = capacity;
         Debug.LogWarning("worker has currently loaded " + currentLoad);
         isFullyLoaded = true;
         spriteRenderer.sprite = workerIcon;
@@ -54,9 +54,9 @@ public class Miner : WorkerBase
 
     private IEnumerator UnloadCapacity()
     {
-        yield return new WaitForSeconds(TimeToUnload);
+        yield return new WaitForSeconds(timeToUnload);
 
-        var spaceInContainer = shaftContainer.maxCapacity - shaftContainer.CurrentCapacity;
+        var spaceInContainer = shaftContainer.GetMaxCapacity() - shaftContainer.CurrentCapacity;
 
         if (spaceInContainer == 0)
         {
@@ -66,7 +66,7 @@ public class Miner : WorkerBase
         if (spaceInContainer >= currentLoad)
         {
             int containerCap = shaftContainer.CurrentCapacity;
-            shaftContainer.SetNewContainerCapacity(containerCap += currentLoad);
+            shaftContainer.SetNewContainerCapacity(containerCap + currentLoad);
             currentLoad = 0;
             shaftContainer.SetContainerCapacityText();
             isFullyLoaded = false;
@@ -75,7 +75,7 @@ public class Miner : WorkerBase
         {
             var loadToStore = currentLoad - spaceInContainer;
             currentLoad -= loadToStore;
-            shaftContainer.SetNewContainerCapacity(shaftContainer.maxCapacity);
+            shaftContainer.SetNewContainerCapacity(shaftContainer.GetMaxCapacity());
             shaftContainer.SetContainerCapacityText();
             shaftContainer.isFullyLoaded = true;
             isFullyLoaded = false;
@@ -105,12 +105,12 @@ public class Miner : WorkerBase
             if (!isFullyLoaded)
             {
                 transform.position = Vector2.MoveTowards(transform.position, loadingPosition.transform.position,
-                    WalkingSpeed * Time.deltaTime);
+                    walkingSpeed * Time.deltaTime);
             }
             else if (isFullyLoaded)
             {
                 transform.position = Vector2.MoveTowards(transform.position, unloadingPosition.transform.position,
-                    WalkingSpeed * Time.deltaTime);
+                    walkingSpeed * Time.deltaTime);
             }
         }
 

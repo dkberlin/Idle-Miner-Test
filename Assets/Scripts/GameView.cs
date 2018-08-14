@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameView : MonoBehaviour
 {
-    public Text moneyInfo { get; protected set; }
+    [SerializeField] private Text moneyInfo;
 
     public void UpgradeMoneyTextField(int money)
     {

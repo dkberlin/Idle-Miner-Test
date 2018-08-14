@@ -9,10 +9,11 @@ public abstract class WorkerBase : MonoBehaviour
 
     public bool active;
     public bool hasManager = false;
-    public int Capacity { get; protected set; }
-    public float TimeToLoad { get; protected set; }
-    public float TimeToUnload { get; protected set; }
-    public float WalkingSpeed { get; protected set; }
+
+    [SerializeField] protected int capacity;
+    [SerializeField] protected float timeToLoad;
+    [SerializeField] protected float timeToUnload;
+    [SerializeField] protected float walkingSpeed;
 
     protected int currentLoad;
     protected bool isFullyLoaded = false;
@@ -21,23 +22,45 @@ public abstract class WorkerBase : MonoBehaviour
     public abstract void OnArrivedAtLoadingPosition();
     public abstract void OnArrivedAtUnloadingPosition();
 
+    #region GETTER/SETTER
+    public int GetCapacity()
+    {
+        return capacity;
+    }
+
+    public float GetTimeToLoad()
+    {
+        return timeToLoad;
+    }
+
+    public float GetWalkingSpeed()
+    {
+        return walkingSpeed;
+    }
+
+    public float GetTimeToUnload()
+    {
+        return timeToUnload;
+    }
+
     public void SetCap(int cap)
     {
-        Capacity = cap;
+        capacity = cap;
     }
 
     public void SetTimeToLoad(float time)
     {
-        TimeToLoad = time;
+        timeToLoad = time;
     }
 
     public void SetTimeToUnload(float time)
     {
-        TimeToUnload = time;
+        timeToUnload = time;
     }
 
     public void SetWalkingSpeed(float speed)
     {
-        WalkingSpeed = speed;
+        walkingSpeed = speed;
     }
+    #endregion
 }

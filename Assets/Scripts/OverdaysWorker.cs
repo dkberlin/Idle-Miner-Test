@@ -59,9 +59,9 @@ public class OverdaysWorker : WorkerBase
 
     private IEnumerator LoadCapacity()
     {
-        yield return new WaitForSeconds(TimeToLoad);
+        yield return new WaitForSeconds(timeToLoad);
 
-        var spaceLeft = Capacity - currentLoad;
+        var spaceLeft = capacity - currentLoad;
 
         if (spaceLeft >= loadingContainer.CurrentCapacity)
         {
@@ -72,12 +72,12 @@ public class OverdaysWorker : WorkerBase
 
         if (spaceLeft < loadingContainer.CurrentCapacity)
         {
-            currentLoad = Capacity;
+            currentLoad = capacity;
             loadingContainer.SetNewContainerCapacity(loadingContainer.CurrentCapacity - spaceLeft);
             loadingContainer.SetContainerCapacityText();
         }
 
-        if (currentLoad == Capacity)
+        if (currentLoad == capacity)
         {
             Debug.LogWarning("Overdays Worker cant load.");
         }
@@ -91,7 +91,7 @@ public class OverdaysWorker : WorkerBase
 
     private IEnumerator UnloadCapacity()
     {
-        yield return new WaitForSeconds(TimeToUnload);
+        yield return new WaitForSeconds(timeToUnload);
         if (OnMoneyEarned != null)
         {
             OnMoneyEarned(currentLoad);
@@ -125,12 +125,12 @@ public class OverdaysWorker : WorkerBase
             if (!isFullyLoaded)
             {
                 transform.position = Vector2.MoveTowards(transform.position, loadingPosition.transform.position,
-                    WalkingSpeed * Time.deltaTime);
+                    walkingSpeed * Time.deltaTime);
             }
             else if (isFullyLoaded)
             {
                 transform.position = Vector2.MoveTowards(transform.position, unloadingPosition.transform.position,
-                    WalkingSpeed * Time.deltaTime);
+                    walkingSpeed * Time.deltaTime);
             }
         }
 
