@@ -155,7 +155,7 @@ public class OverdaysArea : MonoBehaviour
         }
 
         elevatorGuy.capacity = Mathf.RoundToInt(elevatorGuy.capacity * multiplier);
-        elevatorGuy.timesUpdated++;
+        elevatorGuy.UpgradeAdded();
         elevatorGuy.SetElevatorWOrkerCapacityText();
         elevatorUpgradeButton.upgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(elevatorUpgradeButton.upgradeCost);
     }

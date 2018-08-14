@@ -30,7 +30,7 @@ public class MineShaft : MonoBehaviour
         shaftManager.OnManagerActivated += HandleManagerActivated;
         elevatorShaft.SetContainerCapacityText();
         multiplier = GameCore.Instance.Data.BoughtUpgradeMultiplier;
-        mineshaftFloor = GameCore.Instance.mineShaftList.Count;
+        mineshaftFloor = GameCore.Instance.GetAmountOfMineshafts();
         shaftManager.managerCost = GameCore.Instance.Data.GetManagerCost(mineshaftFloor);
         shaftManager.managerBonusTime = ((mineshaftFloor * 6) / 2) + 7;
     }

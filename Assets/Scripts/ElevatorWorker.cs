@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class ElevatorWorker : WorkerBase
 {
-    public ContainerBase groundFloorContainer;
-    public List<MineContainer> loadingPositions;
+    [SerializeField]
+    private ContainerBase groundFloorContainer;
+    [SerializeField]
+    private List<MineContainer> loadingPositions;
     private SpriteRenderer spriteR;
 
     public bool shouldBeMoving;
-    public int timesUpdated = 0;
-    public int maxSpeedUpgrades = 4;
+    public int timesUpdated { get; protected set; }
+    public int maxSpeedUpgrades { get; protected set; }
 
     private int index = 1;
 
@@ -21,6 +23,8 @@ public class ElevatorWorker : WorkerBase
         spriteR = GetComponent<SpriteRenderer>();
         groundFloorContainer.SetContainerCapacityText();
         SetElevatorWOrkerCapacityText();
+        timesUpdated = 0;
+        maxSpeedUpgrades = 4;
     }
 
     private void Update()
@@ -189,5 +193,15 @@ public class ElevatorWorker : WorkerBase
     public void SetElevatorWOrkerCapacityText()
     {
         transform.GetComponentInChildren<TextMesh>().text = currentLoad + "/" + capacity;
+    }
+
+    public void AddNewLoadingPositions(MineContainer newShaftElevatorShaft)
+    {
+        loadingPositions.Add(newShaftElevatorShaft);
+    }
+
+    public void UpgradeAdded()
+    {
+        timesUpdated++;
     }
 }

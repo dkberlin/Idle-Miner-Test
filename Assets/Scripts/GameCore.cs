@@ -6,9 +6,13 @@ public class GameCore : MonoSingleton<GameCore>
 {
     #region EDITOR
     [SerializeField] private UpgradeButton AddNewMineshaftButton;
-
+    [SerializeField] private List<UpgradeButton> upgradeButtons;
+    [SerializeField] private List<Manager> managers;
     [SerializeField] private MineShaft mineShaftPrefab;
+    [SerializeField] private GameView gameView;
+    [SerializeField] private ElevatorWorker elevatorWorker;
     [SerializeField] private GameObject overDaysArea;
+    [SerializeField] private GameObject parentObject;
     [SerializeField] private float activeManagerMultiplier;
     [SerializeField] private float basicMineShaftManagerCost;
     [SerializeField] private float basicMineshaftUpgradeCost;
@@ -20,18 +24,11 @@ public class GameCore : MonoSingleton<GameCore>
     [SerializeField] private float newShaftValueMultiplier;
     [SerializeField] private float overdaysManagerCost;
     [SerializeField] private float overdaysUpgradeCost;
-
-    [SerializeField] public List<UpgradeButton> upgradeButtons;
+    [SerializeField] private float gapBetweenMineShafts;
+    #endregion
 
     private OverdaysWorker[] overdaysWorkers;
-
-    public ElevatorWorker elevatorWorker;
-    public float gapBetweenMineShafts;
-    public List<Manager> managers;
-    public List<MineShaft> mineShaftList;
-    public Text moneyInfo;
-    public GameObject parentObject;
-    #endregion
+    private List<MineShaft> mineShaftList;
 
     public DataContainer Data { get; set; }
 
@@ -47,7 +44,7 @@ public class GameCore : MonoSingleton<GameCore>
         AddNewMineshaftButton.upgradeCost = Mathf.RoundToInt(basicNewMineshaftCost);
     }
 
-    public void AddNewMineShaft()
+    private void AddNewMineShaft()
     {
         Vector2 lowestShaftPosition = mineShaftList[mineShaftList.Count - 1].transform.position;
         var newPosition = new Vector2(lowestShaftPosition.x, lowestShaftPosition.y - gapBetweenMineShafts);
@@ -58,7 +55,7 @@ public class GameCore : MonoSingleton<GameCore>
         var lastShaftUpgradeCost = mineShaftList[mineShaftList.Count - 2].upgradeButton.upgradeCost;
         var newShaftMultiplier = Instance.Data.NewShaftValueMultiplier;
 
-        elevatorWorker.loadingPositions.Add(newShaft.elevatorShaft);
+        elevatorWorker.AddNewLoadingPositions(newShaft.elevatorShaft);
         upgradeButtons.Add(newShaft.upgradeButton);
         managers.Add(newShaft.shaftManager);
 
@@ -98,6 +95,11 @@ public class GameCore : MonoSingleton<GameCore>
         }
     }
 
+    public int GetAmountOfMineshafts()
+    {
+        return mineShaftList.Count;
+    }
+
     private void RegisterManagers()
     {
         foreach (var manager in managers)
@@ -111,7 +113,7 @@ public class GameCore : MonoSingleton<GameCore>
         CheckIfManagerAvailable();
         CheckIfUpgradeAvailable();
 
-        moneyInfo.text = "Money earned: " + Data.EarnedMoney;
+        gameView.UpgradeMoneyTextField(Data.EarnedMoney);
     }
 
     private void RegisterWorkers()
@@ -130,7 +132,7 @@ public class GameCore : MonoSingleton<GameCore>
     private void HandleMoneyIncome(int income)
     {
         Data.EarnedMoney += income;
-        moneyInfo.text = "Money earned: " + Data.EarnedMoney;
+        gameView.UpgradeMoneyTextField(Data.EarnedMoney);
         CheckIfUpgradeAvailable();
         CheckIfManagerAvailable();
     }

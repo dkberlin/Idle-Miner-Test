@@ -16,7 +16,7 @@ public class Miner : WorkerBase
         loadingPosition = minerMineShaft.endOfMine;
         unloadingPosition = minerMineShaft.container;
         shaftContainer = minerMineShaft.elevatorShaft;
-        capacity = Mathf.RoundToInt(GameCore.Instance.mineShaftList.Count * GameCore.Instance.Data.NewShaftValueMultiplier) + 5;
+        capacity = Mathf.RoundToInt(GameCore.Instance.GetAmountOfMineshafts() * GameCore.Instance.Data.NewShaftValueMultiplier) + 5;
     }
 
     private void OnMouseDown()

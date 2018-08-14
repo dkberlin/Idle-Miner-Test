@@ -448,29 +448,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec961c26d5daad74e800d2e6ced097ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activated: 0
+  workingPlace: {fileID: 1324771675}
+  spriteRenderer: {fileID: 0}
   activeSprite: {fileID: 21300000, guid: 4d0ccab6d84f0444f849b4a3b989b286, type: 3}
   inactiveSprite: {fileID: 21300000, guid: 71406dd5cfaba964ea43098a5afc62ea, type: 3}
   managerAvailable: {fileID: 21300000, guid: d01eb08899ce70e4bacaeeb255e8fa49, type: 3}
+  managerUnavailable: {fileID: 21300000, guid: 4f4daf881c6b8a14c9b92fa2f1315d24, type: 3}
+  activated: 0
   managerBought: 0
   managerCanBeBought: 0
+  isCoolingDown: 0
   managerBonusTime: 15
   managerCost: 0
-  managerUnavailable: {fileID: 21300000, guid: 4f4daf881c6b8a14c9b92fa2f1315d24, type: 3}
-  spriteRenderer: {fileID: 0}
-  workingPlace: {fileID: 1324771675}
-  isCoolingDown: 0
 --- !u!224 &146953364 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224639705185797430, guid: 345d2c230820b01428f0c443e9ac0c05,
     type: 2}
   m_PrefabInternal: {fileID: 96649223}
---- !u!114 &146953367 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114266670927997796, guid: 345d2c230820b01428f0c443e9ac0c05,
-    type: 2}
-  m_PrefabInternal: {fileID: 96649223}
-  m_Script: {fileID: 11500000, guid: 3353d43db3d904c479a9e56f007ee04c, type: 3}
 --- !u!1 &211305092
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,12 +682,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2c2f4a27d304140a88962e29478609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  workingArea: {fileID: 1261595898}
   spriteR: {fileID: 0}
   upgradeAvailable: {fileID: 21300000, guid: 6e39631b9e3be8242b2d2ba66198b52d, type: 3}
+  upgradeUnavailable: {fileID: 21300000, guid: 5e1d06ac7c8221d449d5b9fd6dabea33, type: 3}
   upgradeCanBeBought: 0
   upgradeCost: 0
-  upgradeUnavailable: {fileID: 21300000, guid: 5e1d06ac7c8221d449d5b9fd6dabea33, type: 3}
-  workingArea: {fileID: 1261595898}
 --- !u!1001 &270048011
 Prefab:
   m_ObjectHideFlags: 0
@@ -841,36 +835,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afd812b477c5f94296f38ee2eee7b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeManagerMultiplier: 1.9
   AddNewMineshaftButton: {fileID: 756183010}
+  upgradeButtons:
+  - {fileID: 229420539}
+  - {fileID: 911002035}
+  - {fileID: 425757822}
+  - {fileID: 756183010}
+  managers:
+  - {fileID: 133778634}
+  - {fileID: 912021309}
+  - {fileID: 1376378974}
+  mineShaftPrefab: {fileID: 114266670927997796, guid: 345d2c230820b01428f0c443e9ac0c05,
+    type: 2}
+  gameView: {fileID: 862772622}
+  elevatorWorker: {fileID: 1324771677}
+  overDaysArea: {fileID: 1261595898}
+  parentObject: {fileID: 1372508099}
+  activeManagerMultiplier: 1.9
   basicMineShaftManagerCost: 15
   basicMineshaftUpgradeCost: 10
   basicNewMineshaftCost: 50
   boughtUpgradeMultiplier: 1.3
   elevatorManagerCost: 20
   elevatorUpgradeCost: 14
-  newShaftValueMultiplier: 1.8
   globalManagerCoolDownTime: 60
-  elevatorWorker: {fileID: 1324771677}
-  gapBetweenMineShafts: 1.1
-  managers:
-  - {fileID: 133778634}
-  - {fileID: 912021309}
-  - {fileID: 1376378974}
-  mineShaftList:
-  - {fileID: 146953367}
-  mineShaftPrefab: {fileID: 114266670927997796, guid: 345d2c230820b01428f0c443e9ac0c05,
-    type: 2}
-  moneyInfo: {fileID: 1106571312}
-  overDaysArea: {fileID: 1261595898}
+  newShaftValueMultiplier: 1.8
   overdaysManagerCost: 18
   overdaysUpgradeCost: 12
-  parentObject: {fileID: 1372508099}
-  upgradeButtons:
-  - {fileID: 229420539}
-  - {fileID: 911002035}
-  - {fileID: 425757822}
-  - {fileID: 756183010}
+  gapBetweenMineShafts: 1.1
 --- !u!4 &315526662
 Transform:
   m_ObjectHideFlags: 0
@@ -1048,8 +1040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dbb775525a65014c90ca0fea393ea36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCapacity: 0
-  maxCapacity: 0
   isFullyLoaded: 0
 --- !u!1 &736126827
 GameObject:
@@ -1201,12 +1191,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2c2f4a27d304140a88962e29478609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  workingArea: {fileID: 0}
   spriteR: {fileID: 0}
   upgradeAvailable: {fileID: 21300000, guid: 0e11e7ee83a418c43a6d0bec78fcacc8, type: 3}
+  upgradeUnavailable: {fileID: 21300000, guid: 8989dab94741f3e4bbbacafdf5968602, type: 3}
   upgradeCanBeBought: 0
   upgradeCost: 0
-  upgradeUnavailable: {fileID: 21300000, guid: 8989dab94741f3e4bbbacafdf5968602, type: 3}
-  workingArea: {fileID: 0}
 --- !u!212 &756183011
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1282,6 +1272,46 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224936778359420328, guid: fc8fce048cc51a4468e8000312086553,
     type: 2}
   m_PrefabInternal: {fileID: 270048011}
+--- !u!1 &862772621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 862772623}
+  - component: {fileID: 862772622}
+  m_Layer: 0
+  m_Name: GameView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &862772622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 862772621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c9ab079ef17ad46b55a27ba52d42dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &862772623
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 862772621}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &911002031
 GameObject:
   m_ObjectHideFlags: 0
@@ -1404,12 +1434,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2c2f4a27d304140a88962e29478609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  workingArea: {fileID: 1324771675}
   spriteR: {fileID: 0}
   upgradeAvailable: {fileID: 21300000, guid: 6e39631b9e3be8242b2d2ba66198b52d, type: 3}
+  upgradeUnavailable: {fileID: 21300000, guid: 5e1d06ac7c8221d449d5b9fd6dabea33, type: 3}
   upgradeCanBeBought: 0
   upgradeCost: 0
-  upgradeUnavailable: {fileID: 21300000, guid: 5e1d06ac7c8221d449d5b9fd6dabea33, type: 3}
-  workingArea: {fileID: 1324771675}
 --- !u!1 &912021304
 GameObject:
   m_ObjectHideFlags: 0
@@ -1532,18 +1562,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec961c26d5daad74e800d2e6ced097ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activated: 0
+  workingPlace: {fileID: 1261595898}
+  spriteRenderer: {fileID: 0}
   activeSprite: {fileID: 21300000, guid: 4d0ccab6d84f0444f849b4a3b989b286, type: 3}
   inactiveSprite: {fileID: 21300000, guid: 71406dd5cfaba964ea43098a5afc62ea, type: 3}
   managerAvailable: {fileID: 21300000, guid: d01eb08899ce70e4bacaeeb255e8fa49, type: 3}
+  managerUnavailable: {fileID: 21300000, guid: 4f4daf881c6b8a14c9b92fa2f1315d24, type: 3}
+  activated: 0
   managerBought: 0
   managerCanBeBought: 0
+  isCoolingDown: 0
   managerBonusTime: 12
   managerCost: 0
-  managerUnavailable: {fileID: 21300000, guid: 4f4daf881c6b8a14c9b92fa2f1315d24, type: 3}
-  spriteRenderer: {fileID: 0}
-  workingPlace: {fileID: 1261595898}
-  isCoolingDown: 0
 --- !u!1 &977961588
 GameObject:
   m_ObjectHideFlags: 0
@@ -1807,8 +1837,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dbb775525a65014c90ca0fea393ea36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCapacity: 0
-  maxCapacity: 0
   isFullyLoaded: 0
 --- !u!212 &1242395604
 SpriteRenderer:
@@ -1972,14 +2000,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d9c13d7d3aeb9d489eb93d28040e88c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elevatorContainer: {fileID: 1324771677}
+  elevatorGuy: {fileID: 1324771677}
   elevatorManager: {fileID: 133778634}
   elevatorUpgradeButton: {fileID: 911002035}
+  overdaysContainer: {fileID: 1972466340}
   overdaysManager: {fileID: 912021309}
   overdaysUpgradeButton: {fileID: 229420539}
-  elevatorGuy: {fileID: 1324771677}
   upgradeButton: {fileID: 229420539}
-  overdaysContainer: {fileID: 1972466340}
-  elevatorContainer: {fileID: 1324771677}
   workerPrefab: {fileID: 114077632025652814, guid: fc8fce048cc51a4468e8000312086553,
     type: 2}
 --- !u!222 &1261595901
@@ -2041,23 +2069,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e07556973aa3534b8d78bca2b38bc35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
+  workerIcon: {fileID: 21300000, guid: 5693ff3cab8863f4e8c820f504504278, type: 3}
   busyIcon: {fileID: 21300000, guid: 845409ac7b93fe041aacd8206b01fa0a, type: 3}
-  capacity: 10
-  hasManager: 0
   loadingPosition: {fileID: 0}
+  unloadingPosition: {fileID: 579418287}
+  active: 0
+  hasManager: 0
+  capacity: 10
   timeToLoad: 5
   timeToUnload: 5
-  unloadingPosition: {fileID: 579418287}
   walkingSpeed: 1
-  workerIcon: {fileID: 21300000, guid: 5693ff3cab8863f4e8c820f504504278, type: 3}
   groundFloorContainer: {fileID: 1972466340}
   loadingPositions:
   - {fileID: 579418287}
   - {fileID: 1334453428}
   shouldBeMoving: 0
-  timesUpdated: 0
-  maxSpeedUpgrades: 4
 --- !u!222 &1324771680
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2173,7 +2199,7 @@ RectTransform:
   - {fileID: 146953364}
   - {fileID: 103820775}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2281,8 +2307,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dbb775525a65014c90ca0fea393ea36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCapacity: 0
-  maxCapacity: 30
   isFullyLoaded: 0
 --- !u!212 &1972466341
 SpriteRenderer:
