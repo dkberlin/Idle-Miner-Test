@@ -73,21 +73,21 @@ public class GameCore : MonoSingleton<GameCore>
 
     private void SetPricesAndMultipliers()
     {
-        Data.ActiveManagerMultiplier = activeManagerMultiplier;
-        Data.BoughtUpgradeMultiplier = boughtUpgradeMultiplier;
+        Data.SetActiveManagerMultiplier(activeManagerMultiplier);
+        Data.SetBoughtUpgradeMultiplier(boughtUpgradeMultiplier);
 
-        Data.ElevatorManagerCost = elevatorManagerCost;
-        Data.ElevatorUpgradeCost = elevatorUpgradeCost;
-        Data.ManagerCoolDownTime = globalManagerCoolDownTime;
+        Data.SetElevatorManagerCost(elevatorManagerCost);
+        Data.SetElevatorUpgradeCost(elevatorUpgradeCost);
+        Data.SetManagerCoolDownTime(globalManagerCoolDownTime);
 
-        Data.BasicMineShaftManagerCost = basicMineShaftManagerCost;
-        Data.BasicMineshaftUpgradeCost = basicMineshaftUpgradeCost;
+        Data.SetBasicMineshaftManagerCost(basicMineShaftManagerCost);
+        Data.SetBasicMineshaftUpgradeCost(basicMineshaftUpgradeCost);
 
-        Data.OverdaysManagerCost = overdaysManagerCost;
-        Data.OverdaysUpgradeCost = overdaysUpgradeCost;
+        Data.SetOverdaysManagerCost(overdaysManagerCost);
+        Data.SetOverdaysUpgradeCost(overdaysUpgradeCost);
 
-        Data.BasicNewMineshaftCost = basicNewMineshaftCost;
-        Data.NewShaftValueMultiplier = newShaftValueMultiplier;
+        Data.SetBasicNewMineshaftCost(basicNewMineshaftCost);
+        Data.SetNewShaftValueMultiplier(newShaftValueMultiplier);
     }
 
     private void RegisterUpgradeButtons()
