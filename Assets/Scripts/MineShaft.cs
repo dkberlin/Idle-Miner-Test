@@ -21,7 +21,7 @@ public class MineShaft : MonoBehaviour
     {
         if (isFirstMineshaft)
         {
-            upgradeButton.upgradeCost = Mathf.RoundToInt(GameCore.Instance.Data.BasicMineshaftUpgradeCost);
+            upgradeButton.SetNewUpgradeCost(Mathf.RoundToInt(GameCore.Instance.Data.BasicMineshaftUpgradeCost));
         }
 
         upgradeButton.OnUpgraded += HandleUpgrade;
@@ -80,10 +80,10 @@ public class MineShaft : MonoBehaviour
 
         foreach (var miner in mineShaftWorkers)
         {
-            miner.capacity = Mathf.RoundToInt(miner.capacity * bonus);
-            miner.walkingSpeed = miner.walkingSpeed * bonus;
-            miner.timeToLoad = miner.timeToLoad / bonus;
-            miner.timeToUnload = miner.timeToUnload / bonus;
+            miner.SetCap(Mathf.RoundToInt(miner.Capacity * bonus));
+            miner.SetWalkingSpeed(miner.WalkingSpeed * bonus);
+            miner.SetTimeToLoad(miner.TimeToLoad / bonus);
+            miner.SetTimeToUnload(miner.TimeToUnload / bonus);
         }
 
         yield return new WaitForSeconds(boostTime);
@@ -92,10 +92,10 @@ public class MineShaft : MonoBehaviour
 
         foreach (var miner in mineShaftWorkers)
         {
-            miner.capacity = Mathf.RoundToInt(miner.capacity / bonus);
-            miner.walkingSpeed = miner.walkingSpeed / bonus;
-            miner.timeToLoad = miner.timeToLoad * bonus;
-            miner.timeToUnload = miner.timeToUnload * bonus;
+            miner.SetCap(Mathf.RoundToInt(miner.Capacity / bonus));
+            miner.SetWalkingSpeed(miner.WalkingSpeed / bonus);
+            miner.SetTimeToLoad(miner.TimeToLoad * bonus);
+            miner.SetTimeToUnload(miner.TimeToUnload * bonus);
         }
 
         StartCoroutine(StartCoolDownPhase());
@@ -145,10 +145,10 @@ public class MineShaft : MonoBehaviour
                 continue;
             }
 
-            miner.walkingSpeed = miner.walkingSpeed * multiplier * mineshaftFloor;
-            miner.capacity = Mathf.RoundToInt(miner.capacity * multiplier * mineshaftFloor);
-            miner.timeToLoad = miner.timeToLoad - multiplier * mineshaftFloor / 3;
-            miner.timeToUnload = miner.timeToUnload - multiplier * mineshaftFloor / 3;
+            miner.SetWalkingSpeed(miner.WalkingSpeed * multiplier * mineshaftFloor);
+            miner.SetCap(Mathf.RoundToInt(miner.Capacity * multiplier * mineshaftFloor));
+            miner.SetTimeToLoad(miner.TimeToLoad - multiplier * mineshaftFloor / 3);
+            miner.SetTimeToUnload(miner.TimeToUnload - multiplier * mineshaftFloor / 3);
             miner.AddUpdateCount();
             allMinersMaxed = false;
         }
@@ -162,7 +162,7 @@ public class MineShaft : MonoBehaviour
         elevatorShaft.SetContainerCapacityText();
 
         var newUpgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(upgradeButton.upgradeCost, mineshaftFloor);
-        upgradeButton.upgradeCost = newUpgradeCost;
+        upgradeButton.SetNewUpgradeCost(newUpgradeCost);
     }
 
     private void AddNewMiner()

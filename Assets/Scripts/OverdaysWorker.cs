@@ -6,8 +6,7 @@ public class OverdaysWorker : WorkerBase
 {
     [SerializeField] private ContainerBase loadingContainer;
     [SerializeField] private Manager manager;
-
-    public int timesUpdated = 0;
+    public int timesUpdated { get; private set; }
 
     private ContainerBase[] allContainers;
     private SpriteRenderer spriteR;
@@ -16,6 +15,7 @@ public class OverdaysWorker : WorkerBase
 
     private void Start()
     {
+        timesUpdated = 0;
         spriteR = GetComponent<SpriteRenderer>();
         allContainers = transform.parent.GetComponentsInChildren<ContainerBase>();
 
@@ -33,6 +33,11 @@ public class OverdaysWorker : WorkerBase
 
         loadingContainer = loadingPosition;
         manager = transform.parent.GetComponentInChildren<Manager>();
+    }
+
+    public void AddUpdateAmount()
+    {
+        timesUpdated++;
     }
 
     private void OnMouseDown()
@@ -54,9 +59,9 @@ public class OverdaysWorker : WorkerBase
 
     private IEnumerator LoadCapacity()
     {
-        yield return new WaitForSeconds(timeToLoad);
+        yield return new WaitForSeconds(TimeToLoad);
 
-        var spaceLeft = capacity - currentLoad;
+        var spaceLeft = Capacity - currentLoad;
 
         if (spaceLeft >= loadingContainer.CurrentCapacity)
         {
@@ -67,12 +72,12 @@ public class OverdaysWorker : WorkerBase
 
         if (spaceLeft < loadingContainer.CurrentCapacity)
         {
-            currentLoad = capacity;
+            currentLoad = Capacity;
             loadingContainer.SetNewContainerCapacity(loadingContainer.CurrentCapacity - spaceLeft);
             loadingContainer.SetContainerCapacityText();
         }
 
-        if (currentLoad == capacity)
+        if (currentLoad == Capacity)
         {
             Debug.LogWarning("Overdays Worker cant load.");
         }
@@ -86,7 +91,7 @@ public class OverdaysWorker : WorkerBase
 
     private IEnumerator UnloadCapacity()
     {
-        yield return new WaitForSeconds(timeToUnload);
+        yield return new WaitForSeconds(TimeToUnload);
         if (OnMoneyEarned != null)
         {
             OnMoneyEarned(currentLoad);
@@ -120,12 +125,12 @@ public class OverdaysWorker : WorkerBase
             if (!isFullyLoaded)
             {
                 transform.position = Vector2.MoveTowards(transform.position, loadingPosition.transform.position,
-                    walkingSpeed * Time.deltaTime);
+                    WalkingSpeed * Time.deltaTime);
             }
             else if (isFullyLoaded)
             {
                 transform.position = Vector2.MoveTowards(transform.position, unloadingPosition.transform.position,
-                    walkingSpeed * Time.deltaTime);
+                    WalkingSpeed * Time.deltaTime);
             }
         }
 

@@ -5,11 +5,11 @@ public class UpgradeButton : MonoBehaviour
 {
     [SerializeField] private GameObject workingArea;
 
-    public SpriteRenderer spriteR;
-    public Sprite upgradeAvailable;
-    public Sprite upgradeUnavailable;
+    public SpriteRenderer spriteR { get; private set; }
+    public Sprite upgradeAvailable { get; private set; }
+    public Sprite upgradeUnavailable { get; private set; }
     public bool upgradeCanBeBought;
-    public int upgradeCost;
+    public int upgradeCost { get; private set; }
 
     public event Action OnUpgraded;
 
@@ -28,5 +28,10 @@ public class UpgradeButton : MonoBehaviour
         GameCore.Instance.CheckIfUpgradeAvailable();
         GameCore.Instance.Data.EarnedMoney -= upgradeCost;
         OnUpgraded();
+    }
+
+    public void SetNewUpgradeCost(int cost)
+    {
+        upgradeCost = cost;
     }
 }

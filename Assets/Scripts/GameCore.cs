@@ -41,7 +41,7 @@ public class GameCore : MonoSingleton<GameCore>
         RegisterUpgradeButtons();
         SetPricesAndMultipliers();
         AddNewMineshaftButton.OnUpgraded += AddNewMineShaft;
-        AddNewMineshaftButton.upgradeCost = Mathf.RoundToInt(basicNewMineshaftCost);
+        AddNewMineshaftButton.SetNewUpgradeCost( Mathf.RoundToInt(basicNewMineshaftCost));
     }
 
     private void AddNewMineShaft()
@@ -64,7 +64,7 @@ public class GameCore : MonoSingleton<GameCore>
 
         newShaftManager.OnManagerBought += HandleUpgradeBought;
         newShaft.isFirstMineshaft = false;
-        newUpgradeButton.upgradeCost = Data.GetNewUpgradeCost(lastShaftUpgradeCost, mineShaftList.Count);
+        newUpgradeButton.SetNewUpgradeCost(Data.GetNewUpgradeCost(lastShaftUpgradeCost, mineShaftList.Count));
         newShaftElevatorShaft.SetNewMaxCapacity(Mathf.RoundToInt(newShaftElevatorShaft.maxCapacity * newShaftMultiplier));
 
         CheckIfManagerAvailable();

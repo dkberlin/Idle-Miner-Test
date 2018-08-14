@@ -37,7 +37,7 @@ public class ElevatorWorker : WorkerBase
         if (active)
         {
             transform.position = Vector2.MoveTowards(transform.position, loadingPositions[index].transform.position,
-                walkingSpeed * Time.deltaTime);
+                WalkingSpeed * Time.deltaTime);
         }
 
         if (active && index != 0 &&
@@ -92,9 +92,9 @@ public class ElevatorWorker : WorkerBase
 
     private IEnumerator LoadCapacity()
     {
-        yield return new WaitForSeconds(timeToLoad);
+        yield return new WaitForSeconds(TimeToLoad);
 
-        var spaceLeftInElevator = capacity - currentLoad;
+        var spaceLeftInElevator = Capacity - currentLoad;
 
         if (spaceLeftInElevator == 0)
         {
@@ -115,7 +115,7 @@ public class ElevatorWorker : WorkerBase
             int loadingPosCap = loadingPositions[index].CurrentCapacity;
             loadingPositions[index].SetNewContainerCapacity(loadingPosCap - spaceLeftInElevator);
             loadingPositions[index].SetContainerCapacityText();
-            currentLoad = capacity;
+            currentLoad = Capacity;
             isFullyLoaded = true;
             SetElevatorWOrkerCapacityText();
         }
@@ -137,7 +137,7 @@ public class ElevatorWorker : WorkerBase
 
     private IEnumerator UnloadCapacity()
     {
-        yield return new WaitForSeconds(timeToUnload);
+        yield return new WaitForSeconds(TimeToUnload);
         var spaceLeftInGroundFloorContainer = groundFloorContainer.maxCapacity - groundFloorContainer.CurrentCapacity;
 
         if (currentLoad <= spaceLeftInGroundFloorContainer)
@@ -192,7 +192,7 @@ public class ElevatorWorker : WorkerBase
 
     public void SetElevatorWOrkerCapacityText()
     {
-        transform.GetComponentInChildren<TextMesh>().text = currentLoad + "/" + capacity;
+        transform.GetComponentInChildren<TextMesh>().text = currentLoad + "/" + Capacity;
     }
 
     public void AddNewLoadingPositions(MineContainer newShaftElevatorShaft)
