@@ -31,8 +31,8 @@ public class MineShaft : MonoBehaviour
         elevatorShaft.SetContainerCapacityText();
         multiplier = GameCore.Instance.Data.BoughtUpgradeMultiplier;
         mineshaftFloor = GameCore.Instance.GetAmountOfMineshafts();
-        shaftManager.managerCost = GameCore.Instance.Data.GetManagerCost(mineshaftFloor);
-        shaftManager.managerBonusTime = ((mineshaftFloor * 6) / 2) + 7;
+        shaftManager.SetManagerCost(GameCore.Instance.Data.GetManagerCost(mineshaftFloor));
+        shaftManager.SetManagerBonusTime(((mineshaftFloor * 6) / 2) + 7);
     }
 
     private void HandleManagerActivated()
@@ -50,7 +50,7 @@ public class MineShaft : MonoBehaviour
     {
         shaftManager.activated = true;
         var bonus = GameCore.Instance.Data.ActiveManagerMultiplier;
-        shaftManager.spriteRenderer.sprite = shaftManager.inactiveSprite;
+        shaftManager.SwitchToInactiveSprite();
 
         foreach (var miner in mineShaftWorkers)
         {
@@ -81,7 +81,7 @@ public class MineShaft : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(GameCore.Instance.Data.ManagerCoolDownTime);
 
-        shaftManager.spriteRenderer.sprite = shaftManager.activeSprite;
+        shaftManager.SwitchToActiveSprite();
         shaftManager.isCoolingDown = false;
     }
 

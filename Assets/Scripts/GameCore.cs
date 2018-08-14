@@ -166,12 +166,12 @@ public class GameCore : MonoSingleton<GameCore>
             if (manager.managerCost <= Data.EarnedMoney)
             {
                 manager.managerCanBeBought = true;
-                manager.spriteRenderer.sprite = manager.managerAvailable;
+                manager.SwitchSpriteToAvailable();
             }
             else
             {
                 manager.managerCanBeBought = false;
-                manager.spriteRenderer.sprite = manager.managerUnavailable;
+                manager.SwitchSpriteToUnavailable();
             }
         }
     }

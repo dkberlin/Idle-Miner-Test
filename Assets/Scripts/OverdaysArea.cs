@@ -32,8 +32,8 @@ public class OverdaysArea : MonoBehaviour
 
         workers = GetComponentsInChildren<OverdaysWorker>();
 
-        elevatorManager.managerCost = Mathf.RoundToInt(GameCore.Instance.Data.ElevatorManagerCost);
-        overdaysManager.managerCost = Mathf.RoundToInt(GameCore.Instance.Data.OverdaysManagerCost);
+        elevatorManager.SetManagerCost(Mathf.RoundToInt(GameCore.Instance.Data.ElevatorManagerCost));
+        overdaysManager.SetManagerCost(Mathf.RoundToInt(GameCore.Instance.Data.OverdaysManagerCost));
 
         multiplier = GameCore.Instance.Data.BoughtUpgradeMultiplier;
     }
@@ -87,7 +87,7 @@ public class OverdaysArea : MonoBehaviour
     {
         manager.activated = true;
         var bonus = GameCore.Instance.Data.ActiveManagerMultiplier;
-        manager.spriteRenderer.sprite = manager.inactiveSprite;
+        manager.SwitchToInactiveSprite();
 
         var elevatorArea = elevatorManager.workingPlace;
         var overdaysArea = overdaysManager.workingPlace;
@@ -141,7 +141,7 @@ public class OverdaysArea : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(GameCore.Instance.Data.ManagerCoolDownTime);
 
-        manager.spriteRenderer.sprite = manager.activeSprite;
+        manager.SwitchToActiveSprite();
         manager.isCoolingDown = false;
     }
 

@@ -3,18 +3,18 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    public GameObject workingPlace;
-    public SpriteRenderer spriteRenderer;
-    public Sprite activeSprite;
-    public Sprite inactiveSprite;
-    public Sprite managerAvailable;
-    public Sprite managerUnavailable;
+    [SerializeField] private Sprite managerAvailable;
+    [SerializeField] private Sprite managerUnavailable;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    public Sprite activeSprite { get; private set; }
+    public Sprite inactiveSprite { get; private set; }
+    public GameObject workingPlace { get; private set; }
+    public int managerCost { get; private set; }
+    public int managerBonusTime { get; private set; }
     public bool activated = false;
     public bool managerBought;
     public bool managerCanBeBought;
     public bool isCoolingDown = false;
-    public int managerBonusTime;
-    public int managerCost;
 
     public event Action OnManagerBought;
     public event Action OnManagerActivated;
@@ -39,5 +39,35 @@ public class Manager : MonoBehaviour
             spriteRenderer.sprite = activeSprite;
             GameCore.Instance.CheckIfManagerAvailable();
         }
+    }
+
+    public void SwitchSpriteToAvailable()
+    {
+        spriteRenderer.sprite = managerAvailable;
+    }
+
+    public void SwitchSpriteToUnavailable()
+    {
+        spriteRenderer.sprite = managerUnavailable;
+    }
+
+    public void SwitchToActiveSprite()
+    {
+        spriteRenderer.sprite = activeSprite;
+    }
+
+    public void SwitchToInactiveSprite()
+    {
+        spriteRenderer.sprite = inactiveSprite;
+    }
+
+    public void SetManagerCost(int cost)
+    {
+        managerCost = cost;
+    }
+
+    public void SetManagerBonusTime(int time)
+    {
+        managerBonusTime = time;
     }
 }
