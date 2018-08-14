@@ -50,7 +50,7 @@ public class Miner : WorkerBase
     {
         yield return new WaitForSeconds(timeToUnload);
 
-        var spaceInContainer = shaftContainer.maxCapacity - shaftContainer.currentCapacity;
+        var spaceInContainer = shaftContainer.maxCapacity - shaftContainer.CurrentCapacity;
 
         if (spaceInContainer == 0)
         {
@@ -59,7 +59,8 @@ public class Miner : WorkerBase
 
         if (spaceInContainer >= currentLoad)
         {
-            shaftContainer.currentCapacity += currentLoad;
+            int containerCap = shaftContainer.CurrentCapacity;
+            shaftContainer.SetNewContainerCapacity(containerCap += currentLoad);
             currentLoad = 0;
             shaftContainer.SetContainerCapacityText();
             isFullyLoaded = false;
@@ -68,7 +69,7 @@ public class Miner : WorkerBase
         {
             var loadToStore = currentLoad - spaceInContainer;
             currentLoad -= loadToStore;
-            shaftContainer.currentCapacity = shaftContainer.maxCapacity;
+            shaftContainer.SetNewContainerCapacity(shaftContainer.maxCapacity);
             shaftContainer.SetContainerCapacityText();
             shaftContainer.isFullyLoaded = true;
             isFullyLoaded = false;

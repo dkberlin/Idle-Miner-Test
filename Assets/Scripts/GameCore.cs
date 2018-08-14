@@ -65,7 +65,7 @@ public class GameCore : MonoSingleton<GameCore>
         newShaft.shaftManager.OnManagerBought += HandleUpgradeBought;
         newShaft.isFirstMineshaft = false;
         newShaft.upgradeButton.upgradeCost = Data.GetNewUpgradeCost(lastShaftUpgradeCost, mineShaftList.Count);
-        newShaft.elevatorShaft.maxCapacity = Mathf.RoundToInt(newShaft.elevatorShaft.maxCapacity * newShaftMultiplier);
+        newShaft.elevatorShaft.SetNewMaxCapacity(Mathf.RoundToInt(newShaft.elevatorShaft.maxCapacity * newShaftMultiplier));
 
         CheckIfManagerAvailable();
         CheckIfUpgradeAvailable();

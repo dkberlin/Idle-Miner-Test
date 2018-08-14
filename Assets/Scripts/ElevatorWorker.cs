@@ -98,17 +98,18 @@ public class ElevatorWorker : WorkerBase
             isFullyLoaded = true;
         }
 
-        else if (spaceLeftInElevator >= loadingPositions[index].currentCapacity)
+        else if (spaceLeftInElevator >= loadingPositions[index].CurrentCapacity)
         {
-            currentLoad += loadingPositions[index].currentCapacity;
-            loadingPositions[index].currentCapacity = 0;
+            currentLoad += loadingPositions[index].CurrentCapacity;
+            loadingPositions[index].SetNewContainerCapacity(0);
             loadingPositions[index].SetContainerCapacityText();
             SetElevatorWOrkerCapacityText();
         }
 
-        else if (spaceLeftInElevator < loadingPositions[index].currentCapacity)
+        else if (spaceLeftInElevator < loadingPositions[index].CurrentCapacity)
         {
-            loadingPositions[index].currentCapacity -= spaceLeftInElevator;
+            int loadingPosCap = loadingPositions[index].CurrentCapacity;
+            loadingPositions[index].SetNewContainerCapacity(loadingPosCap - spaceLeftInElevator);
             loadingPositions[index].SetContainerCapacityText();
             currentLoad = capacity;
             isFullyLoaded = true;
@@ -133,11 +134,12 @@ public class ElevatorWorker : WorkerBase
     private IEnumerator UnloadCapacity()
     {
         yield return new WaitForSeconds(timeToUnload);
-        var spaceLeftInGroundFloorContainer = groundFloorContainer.maxCapacity - groundFloorContainer.currentCapacity;
+        var spaceLeftInGroundFloorContainer = groundFloorContainer.maxCapacity - groundFloorContainer.CurrentCapacity;
 
         if (currentLoad <= spaceLeftInGroundFloorContainer)
         {
-            groundFloorContainer.currentCapacity += currentLoad;
+            int loadingPosCap = loadingPositions[index].CurrentCapacity;
+            groundFloorContainer.SetNewContainerCapacity(loadingPosCap += currentLoad);
             currentLoad = 0;
             groundFloorContainer.SetContainerCapacityText();
             SetElevatorWOrkerCapacityText();
@@ -147,7 +149,7 @@ public class ElevatorWorker : WorkerBase
         if (currentLoad > spaceLeftInGroundFloorContainer)
         {
             currentLoad -= spaceLeftInGroundFloorContainer;
-            groundFloorContainer.currentCapacity = groundFloorContainer.maxCapacity;
+            groundFloorContainer.SetNewContainerCapacity(groundFloorContainer.maxCapacity);
             groundFloorContainer.SetContainerCapacityText();
             SetElevatorWOrkerCapacityText();
             isFullyLoaded = false;
@@ -173,7 +175,7 @@ public class ElevatorWorker : WorkerBase
     {
         foreach (var loadingPos in loadingPositions)
         {
-            if (loadingPos.currentCapacity <= 0 || loadingPositions[0] == loadingPos)
+            if (loadingPos.CurrentCapacity <= 0 || loadingPositions[0] == loadingPos)
             {
                 continue;
             }

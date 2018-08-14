@@ -132,7 +132,7 @@ public class MineShaft : MonoBehaviour
             AddNewMiner();
         }
 
-        elevatorShaft.maxCapacity = Mathf.RoundToInt(elevatorShaft.maxCapacity * 1.7f);
+        elevatorShaft.SetNewMaxCapacity(Mathf.RoundToInt(elevatorShaft.maxCapacity * 1.7f));
         elevatorShaft.SetContainerCapacityText();
 
         var newUpgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(upgradeButton.upgradeCost, mineshaftFloor);

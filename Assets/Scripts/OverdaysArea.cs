@@ -191,7 +191,7 @@ public class OverdaysArea : MonoBehaviour
             AddNewMiner();
         }
 
-        overdaysContainer.maxCapacity = Mathf.RoundToInt(overdaysContainer.maxCapacity * 1.7f);
+        overdaysContainer.SetNewMaxCapacity(Mathf.RoundToInt(overdaysContainer.maxCapacity * 1.7f));
         overdaysContainer.SetContainerCapacityText();
 
         var newUpgradeCost = GameCore.Instance.Data.GetNewUpgradeCost(upgradeButton.upgradeCost);

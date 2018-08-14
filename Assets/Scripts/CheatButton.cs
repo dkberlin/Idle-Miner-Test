@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CheatButton : MonoBehaviour
 {
-    public int moneyToCheat;
+    [SerializeField]
+    private int moneyToCheat;
 
     private void OnMouseDown()
     {
