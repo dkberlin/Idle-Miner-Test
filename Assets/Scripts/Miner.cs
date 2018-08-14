@@ -4,24 +4,30 @@ using UnityEngine;
 public class Miner : WorkerBase
 {
     [SerializeField] private MineContainer shaftContainer;
-    public int timesUpdated = 0;
+    public int timesUpdated { get; private set; }
 
     private MineShaft minerMineShaft;
     private SpriteRenderer spriteRenderer;
 
     private void Start()
     {
+        timesUpdated = 0;
         spriteRenderer = GetComponent<SpriteRenderer>();
         minerMineShaft = GetComponentInParent<MineShaft>();
-        loadingPosition = minerMineShaft.endOfMine;
-        unloadingPosition = minerMineShaft.container;
-        shaftContainer = minerMineShaft.elevatorShaft;
+        loadingPosition = minerMineShaft.GetEndOfMine();
+        unloadingPosition = minerMineShaft.GetMineshaftContainer();
+        shaftContainer = minerMineShaft.GetElevatorShaftContainer();
         capacity = Mathf.RoundToInt(GameCore.Instance.GetAmountOfMineshafts() * GameCore.Instance.Data.NewShaftValueMultiplier) + 5;
     }
 
     private void OnMouseDown()
     {
         OnWorkerClicked();
+    }
+
+    public void AddUpdateCount()
+    {
+        timesUpdated++;
     }
 
     public override void OnArrivedAtLoadingPosition()

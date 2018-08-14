@@ -5,17 +5,17 @@ public class DataContainer
 {
     public int EarnedMoney { get; set; }
 
-    public float BasicMineShaftManagerCost { get; protected set; }
-    public float OverdaysUpgradeCost { get; protected set; }
-    public float OverdaysManagerCost { get; protected set; }
-    public float ElevatorUpgradeCost { get; protected set; }
-    public float ElevatorManagerCost { get; protected set; }
-    public float BoughtUpgradeMultiplier { get; protected set; }
-    public float ActiveManagerMultiplier { get; protected set; }
-    public float BasicMineshaftUpgradeCost { get; protected set; }
-    public float BasicNewMineshaftCost { get; protected set; }
-    public float ManagerCoolDownTime { get; protected set; }
-    public float NewShaftValueMultiplier { get; protected set; }
+    public float BasicMineShaftManagerCost { get; private set; }
+    public float OverdaysUpgradeCost { get; private set; }
+    public float OverdaysManagerCost { get; private set; }
+    public float ElevatorUpgradeCost { get; private set; }
+    public float ElevatorManagerCost { get; private set; }
+    public float BoughtUpgradeMultiplier { get; private set; }
+    public float ActiveManagerMultiplier { get; private set; }
+    public float BasicMineshaftUpgradeCost { get; private set; }
+    public float BasicNewMineshaftCost { get; private set; }
+    public float ManagerCoolDownTime { get; private set; }
+    public float NewShaftValueMultiplier { get; private set; }
 
     public int GetNewUpgradeCost(int oldCost, int upgradeLevel = 1)
     {

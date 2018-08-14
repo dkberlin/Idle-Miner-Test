@@ -5,13 +5,13 @@ using UnityEngine;
 public class MineShaft : MonoBehaviour
 {
     [SerializeField] private Miner minerPrefab;
+    [SerializeField] private MineContainer container;
+    [SerializeField] private MineContainer elevatorShaft;
+    [SerializeField] private ContainerBase endOfMine;
+    [SerializeField] private Manager shaftManager;
+    [SerializeField] private UpgradeButton upgradeButton;
     [SerializeField] private int mineshaftFloor;
 
-    public MineContainer container;
-    public MineContainer elevatorShaft;
-    public ContainerBase endOfMine;
-    public Manager shaftManager;
-    public UpgradeButton upgradeButton;
     public bool isFirstMineshaft = true;
 
     private Miner[] mineShaftWorkers;
@@ -34,6 +34,32 @@ public class MineShaft : MonoBehaviour
         shaftManager.SetManagerCost(GameCore.Instance.Data.GetManagerCost(mineshaftFloor));
         shaftManager.SetManagerBonusTime(((mineshaftFloor * 6) / 2) + 7);
     }
+    #region GETTER
+    public MineContainer GetMineshaftContainer()
+    {
+        return container;
+    }
+
+    public UpgradeButton GetMineshaftUpgradeButton()
+    {
+        return upgradeButton;
+    }
+
+    public Manager GetShaftManager()
+    {
+        return shaftManager;
+    }
+
+    public MineContainer GetElevatorShaftContainer()
+    {
+        return elevatorShaft;
+    }
+
+    public ContainerBase GetEndOfMine()
+    {
+        return endOfMine;
+    }
+    #endregion
 
     private void HandleManagerActivated()
     {
@@ -123,7 +149,7 @@ public class MineShaft : MonoBehaviour
             miner.capacity = Mathf.RoundToInt(miner.capacity * multiplier * mineshaftFloor);
             miner.timeToLoad = miner.timeToLoad - multiplier * mineshaftFloor / 3;
             miner.timeToUnload = miner.timeToUnload - multiplier * mineshaftFloor / 3;
-            miner.timesUpdated++;
+            miner.AddUpdateCount();
             allMinersMaxed = false;
         }
 

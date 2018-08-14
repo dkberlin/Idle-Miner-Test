@@ -49,20 +49,23 @@ public class GameCore : MonoSingleton<GameCore>
         Vector2 lowestShaftPosition = mineShaftList[mineShaftList.Count - 1].transform.position;
         var newPosition = new Vector2(lowestShaftPosition.x, lowestShaftPosition.y - gapBetweenMineShafts);
         var newShaft = Instantiate(mineShaftPrefab, newPosition, transform.rotation, parentObject.transform);
+        var newShaftManager = newShaft.GetShaftManager();
+        var newUpgradeButton = newShaft.GetMineshaftUpgradeButton();
+        var newShaftElevatorShaft = newShaft.GetElevatorShaftContainer();
 
         mineShaftList.Add(newShaft);
 
-        var lastShaftUpgradeCost = mineShaftList[mineShaftList.Count - 2].upgradeButton.upgradeCost;
+        var lastShaftUpgradeCost = mineShaftList[mineShaftList.Count - 2].GetMineshaftUpgradeButton().upgradeCost;
         var newShaftMultiplier = Instance.Data.NewShaftValueMultiplier;
 
-        elevatorWorker.AddNewLoadingPositions(newShaft.elevatorShaft);
-        upgradeButtons.Add(newShaft.upgradeButton);
-        managers.Add(newShaft.shaftManager);
+        elevatorWorker.AddNewLoadingPositions(newShaft.GetElevatorShaftContainer());
+        upgradeButtons.Add(newUpgradeButton);
+        managers.Add(newShaftManager);
 
-        newShaft.shaftManager.OnManagerBought += HandleUpgradeBought;
+        newShaftManager.OnManagerBought += HandleUpgradeBought;
         newShaft.isFirstMineshaft = false;
-        newShaft.upgradeButton.upgradeCost = Data.GetNewUpgradeCost(lastShaftUpgradeCost, mineShaftList.Count);
-        newShaft.elevatorShaft.SetNewMaxCapacity(Mathf.RoundToInt(newShaft.elevatorShaft.maxCapacity * newShaftMultiplier));
+        newUpgradeButton.upgradeCost = Data.GetNewUpgradeCost(lastShaftUpgradeCost, mineShaftList.Count);
+        newShaftElevatorShaft.SetNewMaxCapacity(Mathf.RoundToInt(newShaftElevatorShaft.maxCapacity * newShaftMultiplier));
 
         CheckIfManagerAvailable();
         CheckIfUpgradeAvailable();

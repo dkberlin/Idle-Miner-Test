@@ -2,8 +2,8 @@
 
 public abstract class ContainerBase : MonoBehaviour
 {
-    public int CurrentCapacity { get; protected set; }
-    public int maxCapacity { get; protected set; }
+    public int CurrentCapacity { get; private set; }
+    public int maxCapacity { get; private set; }
     public bool isFullyLoaded = false;
 
     protected internal void SetContainerCapacityText()
