@@ -17,24 +17,6 @@ public class MineShaft : MonoBehaviour
     private Miner[] mineShaftWorkers;
     private float multiplier;
 
-    private void Start()
-    {
-        if (isFirstMineshaft)
-        {
-            upgradeButton.SetNewUpgradeCost(Mathf.RoundToInt(GameCore.Instance.Data.BasicMineshaftUpgradeCost));
-        }
-
-        upgradeButton.OnUpgraded += HandleUpgrade;
-        mineShaftWorkers = GetComponentsInChildren<Miner>();
-        shaftManager.OnManagerBought += HandleManagerBought;
-        shaftManager.OnManagerActivated += HandleManagerActivated;
-        multiplier = GameCore.Instance.Data.BoughtUpgradeMultiplier;
-        mineshaftFloor = GameCore.Instance.GetAmountOfMineshafts();
-        shaftManager.SetManagerCost(GameCore.Instance.Data.GetManagerCost(mineshaftFloor));
-        elevatorShaft.SetNewMaxCapacity(elevatorShaft.GetMaxCapacity() * mineshaftFloor);
-        shaftManager.SetManagerBonusTime(((mineshaftFloor * 6) / 2) + 7);
-        elevatorShaft.SetContainerCapacityText();
-    }
     #region GETTER
     public MineContainer GetMineshaftContainer()
     {
@@ -61,6 +43,25 @@ public class MineShaft : MonoBehaviour
         return endOfMine;
     }
     #endregion
+
+    private void Start()
+    {
+        if (isFirstMineshaft)
+        {
+            upgradeButton.SetNewUpgradeCost(Mathf.RoundToInt(GameCore.Instance.Data.BasicMineshaftUpgradeCost));
+        }
+
+        upgradeButton.OnUpgraded += HandleUpgrade;
+        mineShaftWorkers = GetComponentsInChildren<Miner>();
+        shaftManager.OnManagerBought += HandleManagerBought;
+        shaftManager.OnManagerActivated += HandleManagerActivated;
+        multiplier = GameCore.Instance.Data.BoughtUpgradeMultiplier;
+        mineshaftFloor = GameCore.Instance.GetAmountOfMineshafts();
+        shaftManager.SetManagerCost(GameCore.Instance.Data.GetManagerCost(mineshaftFloor));
+        elevatorShaft.SetNewMaxCapacity(elevatorShaft.GetMaxCapacity() * mineshaftFloor);
+        shaftManager.SetManagerBonusTime(((mineshaftFloor * 6) / 2) + 7);
+        elevatorShaft.SetContainerCapacityText();
+    }
 
     private void HandleManagerActivated()
     {

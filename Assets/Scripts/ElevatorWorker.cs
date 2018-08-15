@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class ElevatorWorker : WorkerBase
 {
-    [SerializeField]
-    private ContainerBase groundFloorContainer;
-    [SerializeField]
-    private List<MineContainer> loadingPositions;
+    [SerializeField] private ContainerBase groundFloorContainer;
+    [SerializeField] private List<MineContainer> loadingPositions;
     private SpriteRenderer spriteR;
 
     public bool shouldBeMoving;
@@ -183,6 +181,7 @@ public class ElevatorWorker : WorkerBase
             {
                 continue;
             }
+
             active = true;
             shouldBeMoving = true;
             loadingPosition = loadingPositions[index];

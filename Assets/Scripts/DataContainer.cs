@@ -4,7 +4,6 @@ using UnityEngine;
 public class DataContainer
 {
     public int EarnedMoney { get; set; }
-
     public float BasicMineShaftManagerCost { get; private set; }
     public float OverdaysUpgradeCost { get; private set; }
     public float OverdaysManagerCost { get; private set; }
@@ -17,6 +16,7 @@ public class DataContainer
     public float ManagerCoolDownTime { get; private set; }
     public float NewShaftValueMultiplier { get; private set; }
 
+    #region GETTER AND SETTER
     public int GetNewUpgradeCost(int oldCost, int upgradeLevel = 1)
     {
         return Mathf.RoundToInt(oldCost * BoughtUpgradeMultiplier * upgradeLevel);
@@ -81,4 +81,5 @@ public class DataContainer
     {
         ElevatorUpgradeCost = cost;
     }
+    #endregion
 }
